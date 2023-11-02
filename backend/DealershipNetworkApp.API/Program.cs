@@ -1,4 +1,5 @@
 using DealershipNetworkApp.Infrastructure.Persistence;
+using DealershipNetworkApp.Infrastructure.Persistence.Seed;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection"),
         optionsBuilder => optionsBuilder.MigrationsAssembly("DealershipNetworkApp.API"))
 );
+builder.Services.AddScoped<DbInitializer>();
 
 var app = builder.Build();
 
@@ -22,6 +24,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.SeedDatabase();
 }
 
 app.UseHttpsRedirection();
