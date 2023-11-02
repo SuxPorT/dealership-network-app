@@ -3,15 +3,17 @@
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="7.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.13" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DealershipNetworkApp.Application\DealershipNetworkApp.Application.csproj" />
     <ProjectReference Include="..\DealershipNetworkApp.Core\DealershipNetworkApp.Core.csproj" />
   </ItemGroup>
 </Project>

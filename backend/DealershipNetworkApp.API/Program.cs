@@ -1,4 +1,7 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using DealershipNetworkApp.Infrastructure.Persistence;
+using DealershipNetworkApp.Infrastructure.Persistence.Configurations.IOC;
 using DealershipNetworkApp.Infrastructure.Persistence.Seed;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +18,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("SqliteConnection"),
         optionsBuilder => optionsBuilder.MigrationsAssembly("DealershipNetworkApp.API"))
 );
+
 builder.Services.AddScoped<DbInitializer>();
+
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
+{
+    builder.RegisterModule(new ModuleIOC());
+});
 
 var app = builder.Build();
 
