@@ -15,5 +15,41 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Repositories
 
         public TEntity GetById(int id)
             => _context.Set<TEntity>().FirstOrDefault(e => e.Id == id);
+
+        public TEntity Add(TEntity entity)
+        {
+            _context.Set<TEntity>().Add(entity);
+            _context.SaveChanges();
+
+            return entity;
+        }
+
+        public TEntity Update(TEntity obj, int id)
+        {
+            var entity = GetById(id);
+            if (entity == null)
+            {
+                return null;
+            }
+
+            _context.Set<TEntity>().Update(entity);
+            _context.SaveChanges();
+
+            return entity;
+        }
+
+        public TEntity Remove(int id)
+        {
+            var entity = GetById(id);
+            if (entity == null)
+            {
+                return null;
+            }
+
+            _context.Set<TEntity>().Remove(entity);
+            _context.SaveChanges();
+
+            return entity;
+        }
     }
 }

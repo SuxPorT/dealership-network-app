@@ -15,5 +15,14 @@ namespace DealershipNetworkApp.Application.Services
 
         public TEntity GetById(int id)
             => _repository.GetById(id);
+
+        public TEntity Add(TEntity entity)
+            => _repository.Add(entity);
+
+        public TEntity Update(TEntity obj, int id)
+            => _repository.Update(obj, id);
+
+        public TEntity Remove(int id)
+            => _repository.Remove(id);
     }
 }

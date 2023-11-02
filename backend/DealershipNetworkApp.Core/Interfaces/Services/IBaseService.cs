@@ -6,5 +6,8 @@ namespace DealershipNetworkApp.Core.Interfaces.Services
     {
         IList<TEntity> GetAll();
         TEntity GetById(int id);
+        TEntity Add(TEntity entity);
+        TEntity Update(TEntity obj, int id);
+        TEntity Remove(int id);
     }
 }

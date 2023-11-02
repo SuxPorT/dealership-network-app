@@ -26,17 +26,23 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                 new Accessory
                 {
                     Description = "Headlight",
-                    VehicleChassisNumber = "abc"
+                    VehicleChassisNumber = "abc",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
                 },
                 new Accessory
                 {
                     Description = "Radio",
-                    VehicleChassisNumber = "abc"
+                    VehicleChassisNumber = "abc",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
                 },
                 new Accessory
                 {
                     Description = "Seat cover",
-                    VehicleChassisNumber = "wxyz"
+                    VehicleChassisNumber = "wxyz",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
                 }
             };
 
@@ -59,7 +65,9 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                     BirthDate = new DateTime(2000, 1, 1),
                     City = "Curitiba",
                     UF = "PR",
-                    CEP = "123"
+                    CEP = "123",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
                 },
                 new Owner
                 {
@@ -70,7 +78,9 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                     BirthDate = new DateTime(1999, 1, 25),
                     City = "São Paulo",
                     UF = "SP",
-                    CEP = "321"
+                    CEP = "321",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
                 },
                 new Owner
                 {
@@ -81,7 +91,9 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                     BirthDate = new DateTime(1985, 1, 1),
                     City = "Cascavél",
                     UF = "PR",
-                    CEP = "111"
+                    CEP = "111",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
                 }
             };
 
@@ -98,17 +110,23 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                 new Phone
                 {
                     Number = "41 91111-2222",
-                    OwnerCpfCnpj = "11122233344"
+                    OwnerCpfCnpj = "11122233344",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
                 },
                 new Phone
                 {
                     Number = "42 4212-3221",
-                    OwnerCpfCnpj = "11122233344"
+                    OwnerCpfCnpj = "11122233344",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
                 },
                 new Phone
                 {
                     Number = "5541933334444",
-                    OwnerCpfCnpj = "99922233344"
+                    OwnerCpfCnpj = "99922233344",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
                 }
             };
 
@@ -124,24 +142,27 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
             {
                 new Sale
                 {
-                    CreatedAt = DateTime.Now.AddDays(-2).AddHours(12),
                     Price = 12000,
                     VehicleChassisNumber = "abc",
-                    OwnerCpfCnpj = "11122233344"
+                    OwnerCpfCnpj = "11122233344",
+                    CreatedAt = DateTime.Now.AddDays(-2).AddHours(12),
+                    IsActive = true
                 },
                 new Sale
                 {
-                    CreatedAt = DateTime.Now.AddDays(-12).AddHours(53).AddMinutes(22),
                     Price = 13000,
                     VehicleChassisNumber = "abcde",
-                    OwnerCpfCnpj = "99922233344"
+                    OwnerCpfCnpj = "99922233344",
+                    CreatedAt = DateTime.Now.AddDays(-12).AddHours(53).AddMinutes(22),
+                    IsActive = true
                 },
                 new Sale
                 {
-                    CreatedAt = DateTime.Now.AddHours(8).AddMinutes(23),
                     Price = 10500,
                     VehicleChassisNumber = "wxyz",
-                    OwnerCpfCnpj = "99988844455"
+                    OwnerCpfCnpj = "99988844455",
+                    CreatedAt = DateTime.Now.AddHours(8).AddMinutes(23),
+                    IsActive = true
                 }
             };
 
@@ -158,17 +179,23 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                 new Seller
                 {
                     Name = "João",
-                    BaseSalary = 1200.00m
+                    BaseSalary = 1200.00m,
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
                 },
                 new Seller
                 {
                     Name = "Maria",
-                    BaseSalary = 1333.99m
+                    BaseSalary = 1333.99m,
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
                 },
                 new Seller
                 {
                     Name = "Bernardo",
-                    BaseSalary = 999.99m
+                    BaseSalary = 999.99m,
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
                 }
             };
 
@@ -191,7 +218,9 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                     Price = 34000,
                     Mileage = 12000,
                     SystemVersion = "1.0",
-                    OwnerCpfCnpj = "11122233344"
+                    OwnerCpfCnpj = "11122233344",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
                 },
                 new Vehicle
                 {
@@ -202,7 +231,9 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                     Price = 24700,
                     Mileage = 10100,
                     SystemVersion = "1.0",
-                    OwnerCpfCnpj = "99922233344"
+                    OwnerCpfCnpj = "99922233344",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
                 },
                 new Vehicle
                 {
@@ -213,7 +244,9 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                     Price = 29750,
                     Mileage = 12000,
                     SystemVersion = "1.5",
-                    OwnerCpfCnpj = "99988844455"
+                    OwnerCpfCnpj = "99988844455",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
                 }
             };
 

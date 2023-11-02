@@ -8,11 +8,11 @@ namespace DealershipNetworkApp.Core.Entities
         public int Id { get; set; }
 
         [Required]
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; }
 
-        public DateTime ModifiedAt { get; set; }
+        public DateTime? ModifiedAt { get; set; } = null;
 
         [Required]
-        public bool IsActive { get; set; } = true;
+        public bool? IsActive { get; set; } = null;
     }
 }

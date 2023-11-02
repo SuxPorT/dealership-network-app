@@ -1,4 +1,5 @@
-﻿using DealershipNetworkApp.Core.Interfaces.Services;
+﻿using DealershipNetworkApp.Core.Entities;
+using DealershipNetworkApp.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DealershipNetworkApp.API.Controllers
@@ -15,17 +16,59 @@ namespace DealershipNetworkApp.API.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var sellers = _service.GetAll();
-            return Ok(sellers);
+            var result = _service.GetAll();
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var seller = _service.GetById(id);
+            var result = _service.GetById(id);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        public IActionResult Create([FromBody] Seller seller)
+        {
             if (seller != null)
             {
-                return Ok(seller);
+                var result = _service.Add(seller);
+                return Ok(result);
+            }
+
+            return BadRequest();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Create([FromBody] Seller seller, int id)
+        {
+            if (seller != null)
+            {
+                var result = _service.Update(seller, id);
+                if (result != null)
+                {
+                    return Ok(result);
+                }
+
+                return NotFound();
+            }
+
+            return BadRequest();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var result = GetById(id);
+            if (result != null)
+            {
+                var deleted = _service.Remove(id);
+                return Ok(deleted);
             }
 
             return NotFound();
