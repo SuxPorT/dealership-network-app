@@ -11,5 +11,7 @@ namespace DealershipNetworkApp.Core.Entities
         [Required(ErrorMessage = "The \"baseSalary\" field is required")]
         [Range(1200, 6000, ErrorMessage = "The base salary must be between R$1200.00 and R$6000.00")]
         public decimal BaseSalary { get; set; }
+
+        public ICollection<Sale> Sales { get; set; }
     }
 }

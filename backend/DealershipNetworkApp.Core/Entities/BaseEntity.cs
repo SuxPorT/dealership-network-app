@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DealershipNetworkApp.Core.Entities
 {
@@ -14,6 +13,6 @@ namespace DealershipNetworkApp.Core.Entities
         public DateTime? ModifiedAt { get; set; } = null;
 
         [Required]
-        public bool? IsActive { get; set; } = null;
+        public bool? IsActive { get; set; } = true;
     }
 }

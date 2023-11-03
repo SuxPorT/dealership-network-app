@@ -64,7 +64,7 @@ namespace DealershipNetworkApp.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = GetById(id);
+            var result = await GetById(id);
             if (result != null)
             {
                 var deleted = await _service.Remove(id);

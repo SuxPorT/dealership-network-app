@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DealershipNetworkApp.Core.Entities
 {
     public class Owner : BaseEntity
     {
-        [Column("OwnerCpfCnpj")]
         [Required(ErrorMessage = "The \"ownerCpfCnpj\" field is required")]
         [MaxLength(20, ErrorMessage = "The CPF/CNPJ must have a maximum of 20 characters")]
         public string CpfCnpj { get; set; }
@@ -35,5 +33,6 @@ namespace DealershipNetworkApp.Core.Entities
         public string CEP { get; set; }
 
         public ICollection<Phone> Phones { get; set; }
+        public ICollection<Vehicle> Vehicles { get; set; }
     }
 }

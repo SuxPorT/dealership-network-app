@@ -9,12 +9,12 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
             ArgumentNullException.ThrowIfNull(context, nameof(context));
             context.Database.EnsureCreated();
 
-            SeedAccessories(context);
             SeedOwners(context);
-            SeedPhones(context);
-            SeedSales(context);
-            SeedSellers(context);
             SeedVehicles(context);
+            SeedAccessories(context);
+            SeedPhones(context);
+            SeedSellers(context);
+            SeedSales(context);
         }
 
         private static void SeedAccessories(AppDbContext context)
@@ -58,6 +58,7 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
             {
                 new Owner
                 {
+                    Id = 1,
                     CpfCnpj = "11122233344",
                     HiringType = "F",
                     Name = "João das Couves",
@@ -71,6 +72,7 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                 },
                 new Owner
                 {
+                    Id = 2,
                     CpfCnpj = "99922233344",
                     HiringType = "F",
                     Name = "José Silva",
@@ -84,6 +86,7 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                 },
                 new Owner
                 {
+                    Id = 3,
                     CpfCnpj = "99988844455",
                     HiringType = "J",
                     Name = "Maria das Graças",
@@ -144,7 +147,7 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                 {
                     Price = 12000,
                     VehicleChassisNumber = "abc",
-                    OwnerCpfCnpj = "11122233344",
+                    SellerId = 1,
                     CreatedAt = DateTime.Now.AddDays(-2).AddHours(12),
                     IsActive = true
                 },
@@ -152,7 +155,7 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                 {
                     Price = 13000,
                     VehicleChassisNumber = "abcde",
-                    OwnerCpfCnpj = "99922233344",
+                    SellerId = 2,
                     CreatedAt = DateTime.Now.AddDays(-12).AddHours(53).AddMinutes(22),
                     IsActive = true
                 },
@@ -160,7 +163,7 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                 {
                     Price = 10500,
                     VehicleChassisNumber = "wxyz",
-                    OwnerCpfCnpj = "99988844455",
+                    SellerId = 3,
                     CreatedAt = DateTime.Now.AddHours(8).AddMinutes(23),
                     IsActive = true
                 }
@@ -211,6 +214,7 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
             {
                 new Vehicle
                 {
+                    Id = 1,
                     ChassisNumber = "abc",
                     Model = "Logan",
                     Year = 2008,
@@ -224,6 +228,7 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                 },
                 new Vehicle
                 {
+                    Id = 2,
                     ChassisNumber = "abcde",
                     Model = "Palio",
                     Year = 2012,
@@ -237,6 +242,7 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                 },
                 new Vehicle
                 {
+                    Id = 3,
                     ChassisNumber = "wxyz",
                     Model = "Kombi",
                     Year = 2000,

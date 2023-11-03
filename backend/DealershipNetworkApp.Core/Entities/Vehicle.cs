@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DealershipNetworkApp.Core.Entities
 {
     public class Vehicle : BaseEntity
     {
-        [Column("VehicleChassisNumber")]
         [Required(ErrorMessage = "The \"chassisNumber\" field is required")]
         [MaxLength(17, ErrorMessage = "The chassis number must have a maximum of 50 characters")]
         public string ChassisNumber { get; set; }
@@ -29,10 +27,11 @@ namespace DealershipNetworkApp.Core.Entities
         [MaxLength(10, ErrorMessage = "The \"systemVersion\" field is required")]
         public string SystemVersion { get; set; }
 
-        [ForeignKey("OwnerCpfCnpj")]
         [Required(ErrorMessage = "The \"ownerCpfCnpj\" field is required")]
         public string OwnerCpfCnpj { get; set; }
         public Owner Owner { get; set; }
+
+        public Sale Sale { get; set; }
 
         public ICollection<Accessory> Accessories { get; set; }
     }
