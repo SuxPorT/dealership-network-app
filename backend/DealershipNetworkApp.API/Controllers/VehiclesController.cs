@@ -1,77 +1,67 @@
 ﻿using DealershipNetworkApp.Application.Interfaces.Services;
+using DealershipNetworkApp.Core.Entities;
 using DealershipNetworkApp.Core.InputModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DealershipNetworkApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VehiclesController : ControllerBase
+    public class VehiclesController : EntityController<VehicleInputModel, Vehicle>
     {
         private readonly IVehicleService _service;
 
-        public VehiclesController(IVehicleService service)
+        public VehiclesController(IVehicleService service) : base(service)
             => _service = service;
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("FindByChassis/{chassisNumber}")]
+        public async Task<IActionResult> GetByChassisNumber(string chassisNumber)
         {
-            var result = await _service.GetAll();
-            return Ok(result);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            var result = await _service.GetById(id);
+            var result = await _service.GetByChassisNumber(chassisNumber);
             if (result != null)
             {
                 return Ok(result);
             }
 
-            return NotFound();
+            return NotFound($"Vehicle with chassis number {chassisNumber} not found");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] VehicleInputModel vehicleInputModel)
+        [HttpPut("UpdadeByChassis/{chassisNumber}")]
+        public async Task<IActionResult> UpdateChassisNumber([FromBody] VehicleInputModel inputModel, string chassisNumber)
         {
-            if (vehicleInputModel != null)
+            try
             {
-                var result = await _service.Add(vehicleInputModel);
-                return Ok(result);
-            }
-
-            return BadRequest();
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Create([FromBody] VehicleInputModel vehicleInputModel, int id)
-        {
-            if (vehicleInputModel != null)
-            {
-                var result = await _service.Update(vehicleInputModel, id);
-                if (result != null)
+                if (inputModel != null)
                 {
-                    return Ok(result);
+                    var result = await _service.UpdateByChassisNumber(inputModel, chassisNumber);
+                    if (result != null)
+                    {
+                        return Ok(result);
+                    }
+
+                    return NotFound($"Vehicle with chassis number {chassisNumber} not found");
                 }
 
-                return NotFound();
+                return BadRequest("Invalid input model");
             }
-
-            return BadRequest();
+            catch (DbUpdateException)
+            {
+                return BadRequest("Invalid values from input model");
+            }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("DeleteByChassis/{chassisNumber}")]
+        public async Task<IActionResult> DeleteByCpfCnpj(string chassisNumber)
         {
-            var result = await GetById(id);
+            var result = await _service.GetByChassisNumber(chassisNumber);
             if (result != null)
             {
-                var deleted = await _service.Remove(id);
+                var deleted = await _service.Remove(result.Id);
                 return Ok(deleted);
             }
 
-            return NotFound();
+            return NotFound($"Vehicle with chassis number {chassisNumber} not found");
         }
     }
 }

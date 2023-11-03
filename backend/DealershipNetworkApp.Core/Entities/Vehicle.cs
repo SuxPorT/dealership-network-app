@@ -33,6 +33,6 @@ namespace DealershipNetworkApp.Core.Entities
 
         public Sale Sale { get; set; }
 
-        public ICollection<Accessory> Accessories { get; set; }
+        public ICollection<AccessoryVehicle> AccessoriesVehicles { get; set; }
     }
 }

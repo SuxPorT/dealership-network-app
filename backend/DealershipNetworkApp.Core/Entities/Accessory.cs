@@ -8,9 +8,6 @@ namespace DealershipNetworkApp.Core.Entities
         [MaxLength(50, ErrorMessage = "The description must have a maximum of 50 characters")]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "The \"vehicleChassisNumber\" field is required")]
-        [MaxLength(17, ErrorMessage = "The chassis number must have a maximum of 17 characters")]
-        public string VehicleChassisNumber { get; set; }
-        public Vehicle Vehicle { get; set; }
+        public ICollection<AccessoryVehicle> AccessoriesVehicles { get; set; }
     }
 }

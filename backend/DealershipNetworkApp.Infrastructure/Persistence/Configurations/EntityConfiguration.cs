@@ -8,21 +8,40 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Configurations
         public static void ConfigureOnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Accessory>()
+                .HasKey(e => e.Id);
+
+            modelBuilder.Entity<AccessoryVehicle>()
+                .HasKey(e => new { e.AccessoryId, e.VehicleChassisNumber });
+            modelBuilder.Entity<AccessoryVehicle>()
+                .HasIndex(e => e.Id)
+                .IsUnique();
+            modelBuilder.Entity<AccessoryVehicle>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<AccessoryVehicle>()
+                .HasOne(e => e.Accessory)
+                .WithMany(e => e.AccessoriesVehicles)
+                .HasForeignKey(e => e.AccessoryId);
+
+            modelBuilder.Entity<AccessoryVehicle>()
                 .HasOne(e => e.Vehicle)
-                .WithMany(e => e.Accessories)
+                .WithMany(e => e.AccessoriesVehicles)
                 .HasForeignKey(e => e.VehicleChassisNumber);
 
             modelBuilder.Entity<Owner>()
                 .HasKey(e => e.CpfCnpj);
             modelBuilder.Entity<Owner>()
-                .HasIndex(e => new { e.Id, e.CpfCnpj })
+                .HasIndex(e => e.Id)
                 .IsUnique();
             modelBuilder.Entity<Owner>()
                 .Property(e => e.Id)
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Phone>()
-                .HasIndex(e => new { e.Id, e.Number })
+                .HasKey(e => e.Id);
+            modelBuilder.Entity<Phone>()
+                .HasIndex(e => e.Id)
                 .IsUnique();
             modelBuilder.Entity<Phone>()
                 .Property(e => e.Id)
@@ -34,6 +53,9 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Configurations
                 .HasForeignKey(e => e.OwnerCpfCnpj);
 
             modelBuilder.Entity<Sale>()
+                .HasKey(e => e.Id);
+
+            modelBuilder.Entity<Sale>()
                 .HasOne(e => e.Vehicle)
                 .WithOne(e => e.Sale)
                 .HasForeignKey<Sale>(e => e.VehicleChassisNumber);
@@ -43,10 +65,13 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Configurations
                 .WithMany(e => e.Sales)
                 .HasForeignKey(e => e.SellerId);
 
+            modelBuilder.Entity<Seller>()
+                .HasKey(e => e.Id);
+
             modelBuilder.Entity<Vehicle>()
                 .HasKey(e => e.ChassisNumber);
             modelBuilder.Entity<Vehicle>()
-                .HasIndex(e => new { e.Id, e.ChassisNumber })
+                .HasIndex(e => e.Id)
                 .IsUnique();
             modelBuilder.Entity<Vehicle>()
                 .Property(e => e.Id)
@@ -58,6 +83,7 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Configurations
                 .HasForeignKey(e => e.OwnerCpfCnpj);
 
             modelBuilder.Entity<Accessory>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
+            modelBuilder.Entity<AccessoryVehicle>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
             modelBuilder.Entity<Owner>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
             modelBuilder.Entity<Phone>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
             modelBuilder.Entity<Sale>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));

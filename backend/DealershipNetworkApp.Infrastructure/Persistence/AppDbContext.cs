@@ -13,6 +13,7 @@ namespace DealershipNetworkApp.Infrastructure.Persistence
         public DbSet<Sale> Sales { get; set; }
         public DbSet<Seller> Sellers { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<AccessoryVehicle> AccessoriesVehicles { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

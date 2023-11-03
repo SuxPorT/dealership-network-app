@@ -1,77 +1,67 @@
 ﻿using DealershipNetworkApp.Application.Interfaces.Services;
+using DealershipNetworkApp.Core.Entities;
 using DealershipNetworkApp.Core.InputModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DealershipNetworkApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OwnersController : ControllerBase
+    public class OwnersController : EntityController<OwnerInputModel, Owner>
     {
         private readonly IOwnerService _service;
 
-        public OwnersController(IOwnerService service)
+        public OwnersController(IOwnerService service) : base(service)
             => _service = service;
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
+        [HttpGet("GetByCpfCnpj/{cpfCnpj}")]
+        public async Task<IActionResult> GetByCpfCnpj(string cpfCnpj)
         {
-            var result = await _service.GetAll();
-            return Ok(result);
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
-        {
-            var result = await _service.GetById(id);
+            var result = await _service.GetByCpfCnpj(cpfCnpj);
             if (result != null)
             {
                 return Ok(result);
             }
 
-            return NotFound();
+            return NotFound($"Owner with CPF/CNPJ {cpfCnpj} not found");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] OwnerInputModel ownerInputModel)
+        [HttpPut("UpdateByCpfCnpj/{cpfCnpj}")]
+        public async Task<IActionResult> UpdateByCpfCnpj([FromBody] OwnerInputModel inputModel, string cpfCnpj)
         {
-            if (ownerInputModel != null)
+            try
             {
-                var result = await _service.Add(ownerInputModel);
-                return Ok(result);
-            }
-
-            return BadRequest();
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Create([FromBody] OwnerInputModel ownerInputModel, int id)
-        {
-            if (ownerInputModel != null)
-            {
-                var result = await _service.Update(ownerInputModel, id);
-                if (result != null)
+                if (inputModel != null)
                 {
-                    return Ok(result);
+                    var result = await _service.UpdateByCpfCnpj(inputModel, cpfCnpj);
+                    if (result != null)
+                    {
+                        return Ok(result);
+                    }
+
+                    return NotFound($"Owner with CPF/CNPJ {cpfCnpj} not found");
                 }
 
-                return NotFound();
+                return BadRequest("Invalid input model");
             }
-
-            return BadRequest();
+            catch (DbUpdateException)
+            {
+                return BadRequest("Invalid values from input model");
+            }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("DeleteByCpfCnpj/{cpfCnpj}")]
+        public async Task<IActionResult> DeleteByCpfCnpj(string cpfCnpj)
         {
-            var result = await GetById(id);
+            var result = await _service.GetByCpfCnpj(cpfCnpj);
             if (result != null)
             {
-                var deleted = await _service.Remove(id);
+                var deleted = await _service.Remove(result.Id);
                 return Ok(deleted);
             }
 
-            return NotFound();
+            return NotFound($"Owner with CPF/CNPJ {cpfCnpj} not found");
         }
     }
 }

@@ -10,8 +10,8 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Repositories
         where TEntityInputModel : BaseInputModel
         where TEntity : BaseEntity
     {
-        private readonly AppDbContext _context;
-        private readonly IMapper _mapper;
+        protected readonly AppDbContext _context;
+        protected readonly IMapper _mapper;
 
         public BaseRepository(AppDbContext context, IMapper mapper)
         {
