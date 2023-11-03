@@ -2,6 +2,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using DealershipNetworkApp.Infrastructure.Persistence;
 using DealershipNetworkApp.Infrastructure.Persistence.Configurations.IOC;
+using DealershipNetworkApp.Infrastructure.Persistence.Mappers;
 using DealershipNetworkApp.Infrastructure.Persistence.Seed;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +27,8 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 {
     builder.RegisterModule(new ModuleIOC());
 });
+
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
 var app = builder.Build();
 

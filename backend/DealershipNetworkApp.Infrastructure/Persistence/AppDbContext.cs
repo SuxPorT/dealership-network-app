@@ -19,6 +19,9 @@ namespace DealershipNetworkApp.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Owner>().HasKey(e => new { e.Id, e.CpfCnpj });
+            modelBuilder.Entity<Vehicle>().HasKey(e => new { e.Id, e.ChassisNumber });
+
             modelBuilder.Entity<Accessory>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
             modelBuilder.Entity<Owner>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
             modelBuilder.Entity<Phone>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
@@ -30,9 +33,8 @@ namespace DealershipNetworkApp.Infrastructure.Persistence
         public override int SaveChanges()
         {
             foreach (
-                var entry in ChangeTracker
-                                .Entries()
-                                .Where(e => e.Entity.GetType().GetProperty("CreatedAt") != null)
+                var entry in ChangeTracker.Entries()
+                                          .Where(e => e.Entity.GetType().GetProperty("CreatedAt") != null)
             ) 
             {
                 switch (entry.State)

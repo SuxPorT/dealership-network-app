@@ -1,7 +1,7 @@
 ﻿using Autofac;
+using DealershipNetworkApp.Application.Interfaces.Services;
 using DealershipNetworkApp.Application.Services;
-using DealershipNetworkApp.Core.Interfaces.Repositories;
-using DealershipNetworkApp.Core.Interfaces.Services;
+using DealershipNetworkApp.Core.Interfaces;
 using DealershipNetworkApp.Infrastructure.Persistence.Repositories;
 
 namespace DealershipNetworkApp.Infrastructure.Persistence.Configurations.IOC

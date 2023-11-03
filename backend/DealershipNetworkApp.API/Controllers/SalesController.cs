@@ -1,5 +1,5 @@
-﻿using DealershipNetworkApp.Core.Entities;
-using DealershipNetworkApp.Core.Interfaces.Services;
+﻿using DealershipNetworkApp.Application.Interfaces.Services;
+using DealershipNetworkApp.Core.InputModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DealershipNetworkApp.API.Controllers
@@ -33,11 +33,11 @@ namespace DealershipNetworkApp.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Sale sale)
+        public IActionResult Create([FromBody] SaleInputModel saleInputModel)
         {
-            if (sale != null)
+            if (saleInputModel != null)
             {
-                var result = _service.Add(sale);
+                var result = _service.Add(saleInputModel);
                 return Ok(result);
             }
 
@@ -45,11 +45,11 @@ namespace DealershipNetworkApp.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Create([FromBody] Sale sale, int id)
+        public IActionResult Create([FromBody] SaleInputModel saleInputModel, int id)
         {
-            if (sale != null)
+            if (saleInputModel != null)
             {
-                var result = _service.Update(sale, id);
+                var result = _service.Update(saleInputModel, id);
                 if (result != null)
                 {
                     return Ok(result);
