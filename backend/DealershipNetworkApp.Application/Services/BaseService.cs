@@ -13,19 +13,19 @@ namespace DealershipNetworkApp.Application.Services
         public BaseService(IBaseRepository<TEntityInputModel, TEntity> repository)
             => _repository = repository;
 
-        public IList<TEntity> GetAll()
-            => _repository.GetAll();
+        public async Task<IList<TEntity>> GetAll()
+            => await _repository.GetAll();
 
-        public TEntity GetById(int id)
-            => _repository.GetById(id);
+        public async Task<TEntity> GetById(int id)
+            => await _repository.GetById(id);
 
-        public TEntity Add(TEntityInputModel inputModel)
-            => _repository.Add(inputModel);
+        public async Task<TEntity> Add(TEntityInputModel inputModel)
+            => await _repository.Add(inputModel);
 
-        public TEntity Update(TEntityInputModel inputModel, int id)
-            => _repository.Update(inputModel, id);
+        public async Task<TEntity> Update(TEntityInputModel inputModel, int id)
+            => await _repository.Update(inputModel, id);
 
-        public TEntity Remove(int id)
-            => _repository.Remove(id);
+        public async Task<TEntity> Remove(int id)
+            => await _repository.Remove(id);
     }
 }

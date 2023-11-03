@@ -2,6 +2,7 @@
 using DealershipNetworkApp.Core.Entities;
 using DealershipNetworkApp.Core.InputModels;
 using DealershipNetworkApp.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace DealershipNetworkApp.Infrastructure.Persistence.Repositories
 {
@@ -18,25 +19,25 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Repositories
             _mapper = mapper;
         }
 
-        public IList<TEntity> GetAll()
-            => _context.Set<TEntity>().ToList();
+        public async Task<IList<TEntity>> GetAll()
+            => await _context.Set<TEntity>().ToListAsync();
 
-        public TEntity GetById(int id)
-            => _context.Set<TEntity>().FirstOrDefault(e => e.Id == id);
+        public async Task<TEntity> GetById(int id)
+            => await _context.Set<TEntity>().FirstOrDefaultAsync(e => e.Id == id);
 
-        public TEntity Add(TEntityInputModel inputModel)
+        public async Task<TEntity> Add(TEntityInputModel inputModel)
         {
             var entity = _mapper.Map<TEntity>(inputModel);
 
             _context.Set<TEntity>().Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return entity;
         }
 
-        public TEntity Update(TEntityInputModel inputModel, int id)
+        public async Task<TEntity> Update(TEntityInputModel inputModel, int id)
         {
-            var entity = GetById(id);
+            var entity = await GetById(id);
             if (entity == null)
             {
                 return null;
@@ -45,21 +46,21 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Repositories
             _mapper.Map(inputModel, entity);
 
             _context.Set<TEntity>().Update(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return entity;
         }
 
-        public TEntity Remove(int id)
+        public async Task<TEntity> Remove(int id)
         {
-            var entity = GetById(id);
+            var entity = await GetById(id);
             if (entity == null)
             {
                 return null;
             }
 
             _context.Set<TEntity>().Remove(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return entity;
         }

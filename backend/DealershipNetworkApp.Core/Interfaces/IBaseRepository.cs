@@ -7,10 +7,10 @@ namespace DealershipNetworkApp.Core.Interfaces
         where TEntityInputModel : BaseInputModel
         where TEntity : BaseEntity
     {
-        IList<TEntity> GetAll();
-        TEntity GetById(int id);
-        TEntity Add(TEntityInputModel inputModel);
-        TEntity Update(TEntityInputModel inputModel, int id);
-        TEntity Remove(int id);
+        Task<IList<TEntity>> GetAll();
+        Task<TEntity> GetById(int id);
+        Task<TEntity> Add(TEntityInputModel inputModel);
+        Task<TEntity> Update(TEntityInputModel inputModel, int id);
+        Task<TEntity> Remove(int id);
     }
 }

@@ -14,16 +14,16 @@ namespace DealershipNetworkApp.API.Controllers
             => _service = service;
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _service.GetAll();
+            var result = await _service.GetAll();
             return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _service.GetById(id);
+            var result = await _service.GetById(id);
             if (result != null)
             {
                 return Ok(result);
@@ -33,11 +33,11 @@ namespace DealershipNetworkApp.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] OwnerInputModel ownerInputModel)
+        public async Task<IActionResult> Create([FromBody] OwnerInputModel ownerInputModel)
         {
             if (ownerInputModel != null)
             {
-                var result = _service.Add(ownerInputModel);
+                var result = await _service.Add(ownerInputModel);
                 return Ok(result);
             }
 
@@ -45,11 +45,11 @@ namespace DealershipNetworkApp.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Create([FromBody] OwnerInputModel ownerInputModel, int id)
+        public async Task<IActionResult> Create([FromBody] OwnerInputModel ownerInputModel, int id)
         {
             if (ownerInputModel != null)
             {
-                var result = _service.Update(ownerInputModel, id);
+                var result = await _service.Update(ownerInputModel, id);
                 if (result != null)
                 {
                     return Ok(result);
@@ -62,12 +62,12 @@ namespace DealershipNetworkApp.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var result = GetById(id);
             if (result != null)
             {
-                var deleted = _service.Remove(id);
+                var deleted = await _service.Remove(id);
                 return Ok(deleted);
             }
 

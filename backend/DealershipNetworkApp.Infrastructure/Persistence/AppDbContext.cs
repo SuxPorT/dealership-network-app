@@ -30,7 +30,7 @@ namespace DealershipNetworkApp.Infrastructure.Persistence
             modelBuilder.Entity<Vehicle>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
         }
 
-        public override int SaveChanges()
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             foreach (
                 var entry in ChangeTracker.Entries()
@@ -54,7 +54,7 @@ namespace DealershipNetworkApp.Infrastructure.Persistence
                 }
             }
 
-            return base.SaveChanges();
+            return await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
     }
 }
