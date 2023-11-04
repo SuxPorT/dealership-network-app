@@ -1,0 +1,26 @@
+mat-sidenav {
+  background-color: #e1dfdd;
+  color: #141414;
+  padding: 16px;
+  width: 200px;
+}
+
+mat-sidenav-content {
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.sidenav-container {
+  flex: 1;
+  margin-top: 64px;
+}
