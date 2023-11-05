@@ -1,10 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/views/home/home.component';
+import { OwnerComponent } from './components/views/owner/owner.component';
+import { PhoneComponent } from './components/views/phone/phone.component';
+import { SaleComponent } from './components/views/sale/sale.component';
+import { SellerComponent } from './components/views/seller/seller.component';
+import { VehicleComponent } from './components/views/vehicle/vehicle.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
+  { path: 'owner', component: OwnerComponent },
+  { path: 'phone', component: PhoneComponent },
+  { path: 'sale', component: SaleComponent },
+  { path: 'seller', component: SellerComponent },
+  { path: 'vehicle', component: VehicleComponent },
   { path: '**', redirectTo: '/home' }
 ];
 

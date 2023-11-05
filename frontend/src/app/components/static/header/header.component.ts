@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SidenavService } from 'src/app/services/sidenav.service';
 
 @Component({
   selector: 'app-header',
@@ -6,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
+
+  constructor(private sideNavService: SidenavService) { }
+
+  toggleSidenav(): void {
+    this.sideNavService.toggle();
+  }
 
 }
