@@ -38,6 +38,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
     app.SeedDatabase();
+    app.UseCors(builder => builder.WithOrigins("http://localhost:4200")
+                                  .WithMethods("*")
+                                  .AllowAnyHeader());
 }
 
 app.UseHttpsRedirection();
