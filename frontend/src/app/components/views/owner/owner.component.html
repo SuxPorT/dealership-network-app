@@ -1,1 +1,108 @@
-<p>owner works!</p>
+<div class="content-container">
+  <p class="h1"><mat-icon class="icon-display">person</mat-icon> Owners</p>
+
+  <hr />
+
+  <div class="mat-elevation-z8 mt-2">
+    <table
+      mat-table
+      [dataSource]="this.dataSource"
+      matSort
+      #sort="matSort"
+      (matSortChange)="sortChange($event)"
+    >
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td class="col-1" mat-cell *matCellDef="let item">
+          {{ item.id }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="cpfCnpj">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>CPF/CNPJ</th>
+        <td class="col-2" mat-cell *matCellDef="let item">
+          {{ item.cpfCnpj }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="hiringType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Hiring Type</th>
+        <td class="col-1" mat-cell *matCellDef="let item">
+          {{ item.hiringType }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td class="col-2" mat-cell *matCellDef="let item">
+          {{ item.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="birthDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Birth Date</th>
+        <td class="col-1" mat-cell *matCellDef="let item">
+          {{ item.birthDate | date : "dd/MM/yyyy" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="city">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>City</th>
+        <td class="col-1" mat-cell *matCellDef="let item">
+          {{ item.city }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="UF">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>UF</th>
+        <td class="col-1" mat-cell *matCellDef="let item">
+          {{ item.UF ? item.UF : "- " }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="CEP">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>CEP</th>
+        <td class="col-1" mat-cell *matCellDef="let item">
+          {{ item.CEP ? item.CEP : "-" }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th class="actions" mat-header-cell *matHeaderCellDef>Actions</th>
+        <td class="col-2 action-buttons" mat-cell *matCellDef="let item">
+          <button
+            mat-raised-button
+            color="primary"
+            class="btn btn-primary"
+            matTooltip="Edit"
+          >
+            <mat-icon class="material-icons">edit</mat-icon>
+          </button>
+
+          <button
+            mat-raised-button
+            color="warn"
+            class="btn btn-primary"
+            matTooltip="Delete"
+          >
+            <mat-icon class="material-icons">delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr
+        mat-header-row
+        *matHeaderRowDef="this.displayedColumns; sticky: true"
+      ></tr>
+      <tr mat-row *matRowDef="let row; columns: this.displayedColumns"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell text-center" colspan="3">Results not found</td>
+      </tr>
+    </table>
+
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 25]"
+      showFirstLastButtons
+    ></mat-paginator>
+  </div>
+</div>

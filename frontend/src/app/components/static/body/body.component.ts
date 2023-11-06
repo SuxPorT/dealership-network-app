@@ -8,7 +8,8 @@ import { SidenavService } from 'src/app/services/sidenav.service';
   styleUrls: ['./body.component.scss']
 })
 export class BodyComponent implements AfterViewInit {
-  @ViewChildren('sidenav') public sidenav!: QueryList<MatSidenav>;
+
+  @ViewChildren('sidenav') public sidenav: QueryList<MatSidenav>;
 
   constructor(private sidenavService: SidenavService) { }
 

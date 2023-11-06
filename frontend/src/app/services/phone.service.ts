@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Accessory } from '../models/accessory.model';
+import { Phone } from '../models/phone.model';
 import { BaseService } from './base.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AccessoryService extends BaseService<Accessory> {
+export class PhoneService extends BaseService<Phone> {
 
-  protected override endpoint: string = "Accessories";
+  protected override endpoint: string = "Phones";
 
   constructor(protected override http: HttpClient) {
     super(http);
