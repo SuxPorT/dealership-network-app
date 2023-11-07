@@ -42,8 +42,6 @@ export class VehicleComponent implements OnInit {
       if (result) {
         this.dataSource = new MatTableDataSource<Vehicle>(result);
         this.dataSource.paginator = this.paginator;
-
-        console.log(this.dataSource);
       }
     });
   }

@@ -39,8 +39,6 @@ export class SellerComponent implements OnInit {
       if (result) {
         this.dataSource = new MatTableDataSource<Seller>(result);
         this.dataSource.paginator = this.paginator;
-
-        console.log(this.dataSource);
       }
     });
   }

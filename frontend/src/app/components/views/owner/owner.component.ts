@@ -42,8 +42,6 @@ export class OwnerComponent implements OnInit {
       if (result) {
         this.dataSource = new MatTableDataSource<Owner>(result);
         this.dataSource.paginator = this.paginator;
-
-        console.log(this.dataSource);
       }
     });
   }

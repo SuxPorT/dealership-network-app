@@ -10,7 +10,7 @@ import { SaleService } from 'src/app/services/sale.service';
   templateUrl: './sale.component.html',
   styleUrls: ['./sale.component.scss']
 })
-export default class SaleComponent implements OnInit {
+export class SaleComponent implements OnInit {
 
   @ViewChild('sort') sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -42,8 +42,6 @@ export default class SaleComponent implements OnInit {
       if (result) {
         this.dataSource = new MatTableDataSource<Sale>(result);
         this.dataSource.paginator = this.paginator;
-
-        console.log(this.dataSource);
       }
     });
   }

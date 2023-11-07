@@ -4,7 +4,7 @@ import { HomeComponent } from './components/views/home/home.component';
 import { AccessoryComponent } from './components/views/accessory/accessory.component';
 import { OwnerComponent } from './components/views/owner/owner.component';
 import { PhoneComponent } from './components/views/phone/phone.component';
-import SaleComponent from './components/views/sale/sale.component';
+import { SaleComponent } from './components/views/sale/sale.component';
 import { SellerComponent } from './components/views/seller/seller.component';
 import { VehicleComponent } from './components/views/vehicle/vehicle.component';
 
