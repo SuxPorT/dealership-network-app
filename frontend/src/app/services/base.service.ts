@@ -26,4 +26,22 @@ export class BaseService<TModel> {
     );
   }
 
+  create(model: TModel): Observable<TModel> {
+    return this.http.post<TModel>(
+      `${environment.apiUri}/${this.endpoint}`, model, this.httpOptions
+    );
+  }
+
+  update(model: TModel, id: number): Observable<TModel> {
+    return this.http.put<TModel>(
+      `${environment.apiUri}/${this.endpoint}/${id}`, model, this.httpOptions
+    );
+  }
+
+  delete(id: number): Observable<any> {
+    return this.http.delete(
+      `${environment.apiUri}/${this.endpoint}/${id}`, this.httpOptions
+    );
+  }
+
 }

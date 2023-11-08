@@ -82,13 +82,13 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Configurations
                 .WithMany(e => e.Vehicles)
                 .HasForeignKey(e => e.OwnerCpfCnpj);
 
-            modelBuilder.Entity<Accessory>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
-            modelBuilder.Entity<AccessoryVehicle>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
-            modelBuilder.Entity<Owner>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
-            modelBuilder.Entity<Phone>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
-            modelBuilder.Entity<Sale>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
-            modelBuilder.Entity<Seller>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
-            modelBuilder.Entity<Vehicle>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
+            //modelBuilder.Entity<Accessory>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
+            //modelBuilder.Entity<AccessoryVehicle>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
+            //modelBuilder.Entity<Owner>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
+            //modelBuilder.Entity<Phone>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
+            //modelBuilder.Entity<Sale>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
+            //modelBuilder.Entity<Seller>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
+            //modelBuilder.Entity<Vehicle>().HasQueryFilter(e => EF.Property<bool>(e, "IsActive"));
         }
     }
 }

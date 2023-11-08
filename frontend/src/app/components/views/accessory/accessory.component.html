@@ -24,7 +24,7 @@
       >
         <mat-form-field class="field-width" appearance="fill">
           <mat-label>Description</mat-label>
-          <input matInput formControlName="description" />
+          <input matInput formControlName="description" required />
 
           <mat-error
             *ngIf="this.form.controls['description'].hasError('required')"

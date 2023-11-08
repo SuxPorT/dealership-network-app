@@ -8,6 +8,7 @@ import { AccessoryService } from 'src/app/services/accessory.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DialogComponent } from '../../shared/dialog/dialog.component';
 import { DialogType } from 'src/app/models/enums/dialog-type';
+import { catchError, of, switchMap, tap, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-accessory',
@@ -55,12 +56,12 @@ export class AccessoryComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (!this.isEditMode) {
-      if (this.form.valid) {
+    if (this.form.valid) {
+      if (!this.isEditMode) {
         this.create();
+      } else {
+        this.emitEditEvent();
       }
-    } else {
-      this.emitEditEvent();
     }
   }
 
@@ -72,6 +73,9 @@ export class AccessoryComponent implements OnInit {
   clearForm(): void {
     this.form.controls['description'].setValue('');
     this.form.controls['isActive'].setValue(false);
+
+    this.form.controls['description'].setErrors(null);
+    this.form.controls['isActive'].setErrors(null);
   }
 
   emitEditEvent(): void {
@@ -91,24 +95,53 @@ export class AccessoryComponent implements OnInit {
   }
 
   create(): void {
-    console.log(this.form.value);
+    const accessory = {} as Accessory;
+
+    accessory.description = this.form.controls['description'].value!;
+    accessory.isActive = this.form.controls['isActive'].value!;
+
+    this.accessoryService.create(accessory).subscribe((result) => {
+      if (result) {
+        this.clearForm();
+        this.getAll();
+      }
+    });
   }
 
   update(accessory: Accessory): void {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '600px',
-      data: { entity: accessory, dialogType: DialogType.EditAccessory }
+      data: { model: accessory, dialogType: DialogType.EditAccessory }
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log(result);
-      }
-    });
+    dialogRef.afterClosed()
+      .pipe(
+        switchMap((result) => {
+          if (result) {
+            return this.accessoryService.update(accessory, accessory.id)
+              .pipe(
+                catchError((error) => {
+                  this.getAll();
+                  return throwError(() => new Error(error));
+                })
+              );
+          } else {
+            return of();
+          }
+        }),
+        tap(() => {
+          location.reload();
+        })
+      ).subscribe(
+        (_result) => { },
+        (_error) => { }
+      );
   }
 
   delete(accessory: Accessory): void {
-    console.log(accessory);
+    this.accessoryService.delete(accessory.id).subscribe((_result) => {
+      this.getAll();
+    });
   }
 
 }
