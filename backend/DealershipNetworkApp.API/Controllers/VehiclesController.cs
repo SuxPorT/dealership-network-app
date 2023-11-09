@@ -1,5 +1,4 @@
 ﻿using DealershipNetworkApp.Application.Interfaces.Services;
-using DealershipNetworkApp.Core.Entities;
 using DealershipNetworkApp.Core.InputModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,14 +7,21 @@ namespace DealershipNetworkApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VehiclesController : EntityController<VehicleInputModel, Vehicle>
+    public class VehiclesController : ControllerBase
     {
         private readonly IVehicleService _service;
 
-        public VehiclesController(IVehicleService service) : base(service)
+        public VehiclesController(IVehicleService service)
             => _service = service;
 
-        [HttpGet("FindByChassis/{chassisNumber}")]
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _service.GetAll();
+            return Ok(result);
+        }
+
+        [HttpGet("GetByChassis/{chassisNumber}")]
         public async Task<IActionResult> GetByChassisNumber(string chassisNumber)
         {
             var result = await _service.GetByChassisNumber(chassisNumber);
@@ -25,6 +31,25 @@ namespace DealershipNetworkApp.API.Controllers
             }
 
             return NotFound($"Vehicle with chassis number {chassisNumber} not found");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] VehicleInputModel inputModel)
+        {
+            try
+            {
+                if (inputModel != null)
+                {
+                    var result = await _service.Add(inputModel);
+                    return Ok(result);
+                }
+
+                return BadRequest("Invalid input model");
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest("Invalid values from input model");
+            }
         }
 
         [HttpPut("UpdadeByChassis/{chassisNumber}")]
@@ -57,7 +82,7 @@ namespace DealershipNetworkApp.API.Controllers
             var result = await _service.GetByChassisNumber(chassisNumber);
             if (result != null)
             {
-                var deleted = await _service.Remove(result.Id);
+                var deleted = await _service.RemoveByChassisNumber(result);
                 return Ok(deleted);
             }
 

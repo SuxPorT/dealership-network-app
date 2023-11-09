@@ -4,6 +4,8 @@ namespace DealershipNetworkApp.Core.Entities
 {
     public class Sale : BaseEntity
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "The \"price\" field is required")]
         public decimal Price { get; set; }
 

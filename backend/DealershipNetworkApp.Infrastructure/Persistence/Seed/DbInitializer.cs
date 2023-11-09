@@ -80,7 +80,6 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
             {
                 new Owner
                 {
-                    Id = 1,
                     CpfCnpj = "11122233344",
                     HiringType = "F",
                     Name = "João das Couves",
@@ -92,7 +91,6 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                 },
                 new Owner
                 {
-                    Id = 2,
                     CpfCnpj = "99922233344",
                     HiringType = "F",
                     Name = "José Silva",
@@ -104,7 +102,6 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                 },
                 new Owner
                 {
-                    Id = 3,
                     CpfCnpj = "99988844455",
                     HiringType = "J",
                     Name = "Maria das Graças",
@@ -215,7 +212,6 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
             {
                 new Vehicle
                 {
-                    Id = 1,
                     ChassisNumber = "abc",
                     Model = "Logan",
                     Year = 2008,
@@ -227,7 +223,6 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                 },
                 new Vehicle
                 {
-                    Id = 2,
                     ChassisNumber = "abcde",
                     Model = "Palio",
                     Year = 2012,
@@ -239,7 +234,6 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Seed
                 },
                 new Vehicle
                 {
-                    Id = 3,
                     ChassisNumber = "wxyz",
                     Model = "Kombi",
                     Year = 2000,

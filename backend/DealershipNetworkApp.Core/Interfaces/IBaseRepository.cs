@@ -11,6 +11,6 @@ namespace DealershipNetworkApp.Core.Interfaces
         Task<TEntity> GetById(int id);
         Task<TEntity> Add(TEntityInputModel inputModel);
         Task<TEntity> Update(TEntityInputModel inputModel, int id);
-        Task<TEntity> Remove(int id);
+        Task<TEntity> Remove(TEntity entity);
     }
 }

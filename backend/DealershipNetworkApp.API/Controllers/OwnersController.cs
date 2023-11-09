@@ -1,5 +1,4 @@
 ﻿using DealershipNetworkApp.Application.Interfaces.Services;
-using DealershipNetworkApp.Core.Entities;
 using DealershipNetworkApp.Core.InputModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,12 +7,19 @@ namespace DealershipNetworkApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OwnersController : EntityController<OwnerInputModel, Owner>
+    public class OwnersController : ControllerBase
     {
         private readonly IOwnerService _service;
 
-        public OwnersController(IOwnerService service) : base(service)
+        public OwnersController(IOwnerService service)
             => _service = service;
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _service.GetAll();
+            return Ok(result);
+        }
 
         [HttpGet("GetByCpfCnpj/{cpfCnpj}")]
         public async Task<IActionResult> GetByCpfCnpj(string cpfCnpj)
@@ -25,6 +31,25 @@ namespace DealershipNetworkApp.API.Controllers
             }
 
             return NotFound($"Owner with CPF/CNPJ {cpfCnpj} not found");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] OwnerInputModel inputModel)
+        {
+            try
+            {
+                if (inputModel != null)
+                {
+                    var result = await _service.Add(inputModel);
+                    return Ok(result);
+                }
+
+                return BadRequest("Invalid input model");
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest("Invalid values from input model");
+            }
         }
 
         [HttpPut("UpdateByCpfCnpj/{cpfCnpj}")]
@@ -57,7 +82,7 @@ namespace DealershipNetworkApp.API.Controllers
             var result = await _service.GetByCpfCnpj(cpfCnpj);
             if (result != null)
             {
-                var deleted = await _service.Remove(result.Id);
+                var deleted = await _service.RemoveByCpfCnpj(result);
                 return Ok(deleted);
             }
 

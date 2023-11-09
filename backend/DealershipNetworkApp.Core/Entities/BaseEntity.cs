@@ -4,14 +4,12 @@ namespace DealershipNetworkApp.Core.Entities
 {
     public abstract class BaseEntity
     {
-        public int Id { get; set; }
+        [Required]
+        public virtual DateTime CreatedAt { get; set; }
+
+        public virtual DateTime? ModifiedAt { get; set; }
 
         [Required]
-        public DateTime CreatedAt { get; set; }
-
-        public DateTime? ModifiedAt { get; set; }
-
-        [Required]
-        public bool? IsActive { get; set; }
+        public virtual bool? IsActive { get; set; }
     }
 }

@@ -5,6 +5,8 @@ namespace DealershipNetworkApp.Core.Entities
 {
     public class Phone : BaseEntity
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "The \"number\" field is required")]
         [MinLength(9, ErrorMessage = "The phone number must have at least 9 characters")]
         [MaxLength(20, ErrorMessage = "The phone number must have a maximum of 20 characters")]

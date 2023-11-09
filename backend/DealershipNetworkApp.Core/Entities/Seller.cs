@@ -4,6 +4,8 @@ namespace DealershipNetworkApp.Core.Entities
 {
     public class Seller : BaseEntity
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "The \"name\" field is required")]
         [MaxLength(50, ErrorMessage = "The name must have a maximum of 50 characters")]
         public string Name { get; set; }

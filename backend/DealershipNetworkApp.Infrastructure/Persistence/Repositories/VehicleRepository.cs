@@ -2,15 +2,36 @@
 using DealershipNetworkApp.Core.Entities;
 using DealershipNetworkApp.Core.InputModels;
 using DealershipNetworkApp.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace DealershipNetworkApp.Infrastructure.Persistence.Repositories
 {
-    public class VehicleRepository : BaseRepository<VehicleInputModel, Vehicle>, IVehicleRepository
+    public class VehicleRepository : IVehicleRepository
     {
-        public VehicleRepository(AppDbContext context, IMapper mapper) : base(context, mapper) { }
+        protected readonly AppDbContext _context;
+        protected readonly IMapper _mapper;
+
+        public VehicleRepository(AppDbContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
+
+        public async Task<IList<Vehicle>> GetAll()
+            => await _context.Vehicles.ToListAsync();
 
         public async Task<Vehicle> GetByChassisNumber(string chassisNumber)
             => await _context.Vehicles.FindAsync(chassisNumber);
+
+        public async Task<Vehicle> Add(VehicleInputModel inputModel)
+        {
+            var entity = _mapper.Map<Vehicle>(inputModel);
+
+            _context.Vehicles.Add(entity);
+            await _context.SaveChangesAsync();
+
+            return entity;
+        }
 
         public async Task<Vehicle> UpdateByChassisNumber(VehicleInputModel inputModel, string chassisNumber)
         {
@@ -26,6 +47,14 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Repositories
             await _context.SaveChangesAsync();
 
             return entity;
+        }
+
+        public async Task<Vehicle> RemoveByChassisNumber(Vehicle vehicle)
+        {
+            _context.Vehicles.Remove(vehicle);
+            await _context.SaveChangesAsync();
+
+            return vehicle;
         }
     }
 }

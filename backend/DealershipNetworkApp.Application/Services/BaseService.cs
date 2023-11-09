@@ -25,7 +25,7 @@ namespace DealershipNetworkApp.Application.Services
         public async Task<TEntity> Update(TEntityInputModel inputModel, int id)
             => await _repository.Update(inputModel, id);
 
-        public async Task<TEntity> Remove(int id)
-            => await _repository.Remove(id);
+        public async Task<TEntity> Remove(TEntity entity)
+            => await _repository.Remove(entity);
     }
 }

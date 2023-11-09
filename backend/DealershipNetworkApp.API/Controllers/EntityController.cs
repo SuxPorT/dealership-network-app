@@ -83,7 +83,7 @@ namespace DealershipNetworkApp.API.Controllers
             var result = await _service.GetById(id);
             if (result != null)
             {
-                var deleted = await _service.Remove(id);
+                var deleted = await _service.Remove(result);
                 return Ok(deleted);
             }
 

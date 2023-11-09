@@ -6,24 +6,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DealershipNetworkApp.Infrastructure.Persistence.Repositories
 {
-    public class BaseRepository<TEntityInputModel, TEntity> : IBaseRepository<TEntityInputModel, TEntity> 
+    public abstract class BaseRepository<TEntityInputModel, TEntity> : IBaseRepository<TEntityInputModel, TEntity> 
         where TEntityInputModel : BaseInputModel
         where TEntity : BaseEntity
     {
         protected readonly AppDbContext _context;
         protected readonly IMapper _mapper;
 
-        public BaseRepository(AppDbContext context, IMapper mapper)
+        protected BaseRepository(AppDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
+        public abstract Task<TEntity> GetById(int id);
+
         public async Task<IList<TEntity>> GetAll()
             => await _context.Set<TEntity>().ToListAsync();
-
-        public async Task<TEntity> GetById(int id)
-            => await _context.Set<TEntity>().FirstOrDefaultAsync(e => e.Id == id);
 
         public async Task<TEntity> Add(TEntityInputModel inputModel)
         {
@@ -51,14 +50,8 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Repositories
             return entity;
         }
 
-        public async Task<TEntity> Remove(int id)
+        public async Task<TEntity> Remove(TEntity entity)
         {
-            var entity = await GetById(id);
-            if (entity == null)
-            {
-                return null;
-            }
-
             _context.Set<TEntity>().Remove(entity);
             await _context.SaveChangesAsync();
 
