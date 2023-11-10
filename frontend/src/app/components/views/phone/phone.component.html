@@ -1,9 +1,92 @@
 <div class="content-container">
-  <p class="h1"><mat-icon class="icon-display">call</mat-icon> Phones</p>
+  <div class="row">
+    <div class="col-12" *ngIf="this.isEditMode; else header">
+      <h4 class="text-center" *ngIf="this.isEditMode">
+        <strong>Edit Phone</strong>
+      </h4>
+    </div>
 
-  <hr />
+    <ng-template #header>
+      <p class="h1"><mat-icon class="icon-display">call</mat-icon> Phones</p>
+      <hr />
+    </ng-template>
+  </div>
 
-  <div class="mat-elevation-z8 mt-2">
+  <form [formGroup]="this.form" (ngSubmit)="onSubmit()">
+    <div class="row align-items-center">
+      <div
+        [ngClass]="{
+          'col-md-12': this.isEditMode,
+          'col-lg-2': !this.isEditMode
+        }"
+      >
+        <mat-form-field class="field-width" appearance="fill">
+          <mat-label>Number</mat-label>
+          <input matInput formControlName="number" required />
+
+          <mat-error *ngIf="this.form.controls['number'].hasError('required')">
+            Number is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div
+        [ngClass]="{
+          'col-md-12': this.isEditMode,
+          'col-lg-2': !this.isEditMode
+        }"
+      >
+        <mat-form-field class="field-width" appearance="fill">
+          <mat-label>Owner</mat-label>
+          <input matInput formControlName="ownerCpfCnpj" required />
+
+          <mat-error
+            *ngIf="this.form.controls['ownerCpfCnpj'].hasError('required')"
+          >
+            Owner is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div
+        [ngClass]="{
+          'col-md-12 mb-4': this.isEditMode,
+          'col-lg-1': !this.isEditMode
+        }"
+      >
+        <mat-checkbox color="primary" matInput formControlName="isActive"
+          >Active</mat-checkbox
+        >
+      </div>
+
+      <div
+        [ngClass]="{
+          'col-md-6': this.isEditMode,
+          'col-lg-7 text-lg-end': !this.isEditMode
+        }"
+      >
+        <button
+          [ngClass]="{
+            'edit-btn': this.isEditMode
+          }"
+          mat-raised-button
+          color="primary"
+        >
+          <mat-icon *ngIf="!this.isEditMode" class="material-icons-add"
+            >add</mat-icon
+          >{{ this.isEditMode ? "Save" : "Create Sale" }}
+        </button>
+      </div>
+
+      <div class="col-md-6" *ngIf="this.isEditMode">
+        <button class="edit-btn" mat-raised-button mat-dialog-close>
+          Cancel
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div class="mat-elevation-z8 mt-2" *ngIf="!this.isEditMode">
     <table
       mat-table
       [dataSource]="this.dataSource"
@@ -32,6 +115,15 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="isActive">
+        <th class="col-1" mat-header-cell *matHeaderCellDef mat-sort-header>
+          Active
+        </th>
+        <td mat-cell *matCellDef="let item">
+          <input type="checkbox" [checked]="item.isActive" disabled />
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="actions">
         <th class="actions" mat-header-cell *matHeaderCellDef>Actions</th>
         <td class="col-1 action-buttons" mat-cell *matCellDef="let item">
@@ -40,6 +132,7 @@
             color="primary"
             class="btn btn-primary"
             matTooltip="Edit"
+            (click)="update(item)"
           >
             <mat-icon class="material-icons">edit</mat-icon>
           </button>
@@ -49,6 +142,7 @@
             color="warn"
             class="btn btn-primary"
             matTooltip="Delete"
+            (click)="delete(item)"
           >
             <mat-icon class="material-icons">delete</mat-icon>
           </button>

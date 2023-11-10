@@ -2,8 +2,16 @@
 
 namespace DealershipNetworkApp.Core.Entities
 {
-    public class Vehicle : BaseEntity
+    public class Vehicle
     {
+        [Required]
+        public virtual DateTime CreatedAt { get; set; }
+
+        public virtual DateTime? ModifiedAt { get; set; }
+
+        [Required]
+        public virtual bool? IsActive { get; set; }
+
         [Required(ErrorMessage = "The \"chassisNumber\" field is required")]
         [MaxLength(17, ErrorMessage = "The chassis number must have a maximum of 50 characters")]
         public string ChassisNumber { get; set; }

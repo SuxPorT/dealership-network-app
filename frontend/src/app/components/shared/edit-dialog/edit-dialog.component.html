@@ -1,0 +1,49 @@
+<div mat-dialog-content class="container" [ngSwitch]="this.data.dialogType">
+  <app-accessory
+    *ngSwitchCase="0"
+    (closeDialogEvent)="this.onNoClick()"
+    (editEvent)="this.onSubmit($event)"
+    [accessory]="this.data.model"
+    [isEditMode]="true"
+  ></app-accessory>
+
+  <app-owner
+    *ngSwitchCase="1"
+    (closeDialogEvent)="this.onNoClick()"
+    (editEvent)="this.onSubmit($event)"
+    [owner]="this.data.model"
+    [isEditMode]="true"
+  ></app-owner>
+
+  <app-phone
+    *ngSwitchCase="2"
+    (closeDialogEvent)="this.onNoClick()"
+    (editEvent)="this.onSubmit($event)"
+    [phone]="this.data.model"
+    [isEditMode]="true"
+  ></app-phone>
+
+  <app-sale
+    *ngSwitchCase="3"
+    (closeDialogEvent)="this.onNoClick()"
+    (editEvent)="this.onSubmit($event)"
+    [sale]="this.data.model"
+    [isEditMode]="true"
+  ></app-sale>
+
+  <app-seller
+    *ngSwitchCase="4"
+    (closeDialogEvent)="this.onNoClick()"
+    (editEvent)="this.onSubmit($event)"
+    [seller]="this.data.model"
+    [isEditMode]="true"
+  ></app-seller>
+
+  <app-vehicle
+    *ngSwitchCase="5"
+    (closeDialogEvent)="this.onNoClick()"
+    (editEvent)="this.onSubmit($event)"
+    [vehicle]="this.data.model"
+    [isEditMode]="true"
+  ></app-vehicle>
+</div>

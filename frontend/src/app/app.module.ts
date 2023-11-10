@@ -18,7 +18,8 @@ import { OwnerComponent } from './components/views/owner/owner.component';
 import { SaleComponent } from './components/views/sale/sale.component';
 import { SellerComponent } from './components/views/seller/seller.component';
 import { VehicleComponent } from './components/views/vehicle/vehicle.component';
-import { DialogComponent } from './components/shared/dialog/dialog.component';
+import { EditDialogComponent } from './components/shared/edit-dialog/edit-dialog.component';
+import { DeleteDialogComponent } from './components/shared/delete-dialog/delete-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { DialogComponent } from './components/shared/dialog/dialog.component';
     SaleComponent,
     SellerComponent,
     VehicleComponent,
-    DialogComponent
+    EditDialogComponent,
+    DeleteDialogComponent
   ],
   imports: [
     BrowserModule,

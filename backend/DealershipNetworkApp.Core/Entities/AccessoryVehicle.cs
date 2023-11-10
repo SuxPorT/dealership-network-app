@@ -2,8 +2,6 @@
 {
     public class AccessoryVehicle : BaseEntity
     {
-        public int Id { get; set; }
-
         public int AccessoryId { get; set; }
         public Accessory Accessory { get; set; }
 

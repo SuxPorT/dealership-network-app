@@ -1,4 +1,6 @@
-export interface Vehicle {
+import { BaseModel } from "./base-model.model";
+
+export interface Vehicle extends BaseModel {
   chassisNumber: string;
   model: string;
   year: number;

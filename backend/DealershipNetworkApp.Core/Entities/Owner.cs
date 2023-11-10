@@ -2,8 +2,16 @@
 
 namespace DealershipNetworkApp.Core.Entities
 {
-    public class Owner : BaseEntity
+    public class Owner
     {
+        [Required]
+        public virtual DateTime CreatedAt { get; set; }
+
+        public virtual DateTime? ModifiedAt { get; set; }
+
+        [Required]
+        public virtual bool? IsActive { get; set; }
+
         [Required(ErrorMessage = "The \"ownerCpfCnpj\" field is required")]
         [MaxLength(20, ErrorMessage = "The CPF/CNPJ must have a maximum of 20 characters")]
         public string CpfCnpj { get; set; }

@@ -52,7 +52,7 @@ namespace DealershipNetworkApp.API.Controllers
             }
         }
 
-        [HttpPut("UpdadeByChassis/{chassisNumber}")]
+        [HttpPut("UpdateByChassis/{chassisNumber}")]
         public async Task<IActionResult> UpdateChassisNumber([FromBody] VehicleInputModel inputModel, string chassisNumber)
         {
             try
@@ -79,11 +79,10 @@ namespace DealershipNetworkApp.API.Controllers
         [HttpDelete("DeleteByChassis/{chassisNumber}")]
         public async Task<IActionResult> DeleteByCpfCnpj(string chassisNumber)
         {
-            var result = await _service.GetByChassisNumber(chassisNumber);
+            var result = await _service.RemoveByChassisNumber(chassisNumber);
             if (result != null)
             {
-                var deleted = await _service.RemoveByChassisNumber(result);
-                return Ok(deleted);
+                return Ok(result);
             }
 
             return NotFound($"Vehicle with chassis number {chassisNumber} not found");

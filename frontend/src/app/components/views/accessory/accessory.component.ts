@@ -6,9 +6,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Accessory } from 'src/app/models/accessory.model';
 import { AccessoryService } from 'src/app/services/accessory.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { DialogComponent } from '../../shared/dialog/dialog.component';
+import { EditDialogComponent } from '../../shared/edit-dialog/edit-dialog.component';
 import { DialogType } from 'src/app/models/enums/dialog-type';
 import { catchError, of, switchMap, tap, throwError } from 'rxjs';
+import { DeleteDialogComponent } from '../../shared/delete-dialog/delete-dialog.component';
 
 @Component({
   selector: 'app-accessory',
@@ -20,7 +21,7 @@ export class AccessoryComponent implements OnInit {
   @ViewChild('sort') sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  @Input() selectedAccessory: Accessory;
+  @Input() accessory: Accessory;
   @Input() isEditMode: boolean = false;
   @Output() editEvent = new EventEmitter<Accessory>();
 
@@ -66,8 +67,8 @@ export class AccessoryComponent implements OnInit {
   }
 
   fillForm(): void {
-    this.form.controls['description'].setValue(this.selectedAccessory.description);
-    this.form.controls['isActive'].setValue(this.selectedAccessory.isActive);
+    this.form.controls['description'].setValue(this.accessory.description);
+    this.form.controls['isActive'].setValue(this.accessory.isActive);
   }
 
   clearForm(): void {
@@ -79,10 +80,10 @@ export class AccessoryComponent implements OnInit {
   }
 
   emitEditEvent(): void {
-    this.selectedAccessory.description = this.form.controls['description'].value!;
-    this.selectedAccessory.isActive = this.form.controls['isActive'].value!;
+    this.accessory.description = this.form.controls['description'].value!;
+    this.accessory.isActive = this.form.controls['isActive'].value!;
 
-    this.editEvent.emit(this.selectedAccessory);
+    this.editEvent.emit(this.accessory);
   }
 
   getAll(): void {
@@ -109,7 +110,7 @@ export class AccessoryComponent implements OnInit {
   }
 
   update(accessory: Accessory): void {
-    const dialogRef = this.dialog.open(DialogComponent, {
+    const dialogRef = this.dialog.open(EditDialogComponent, {
       width: '600px',
       data: { model: accessory, dialogType: DialogType.EditAccessory }
     });
@@ -139,9 +140,37 @@ export class AccessoryComponent implements OnInit {
   }
 
   delete(accessory: Accessory): void {
-    this.accessoryService.delete(accessory.id).subscribe((_result) => {
-      this.getAll();
+    const dialogRef = this.dialog.open(DeleteDialogComponent, {
+      width: '600px',
+      data: {
+        type: 'accessory',
+        text: accessory.description,
+        dialogType: DialogType.EditAccessory
+      }
     });
+
+    dialogRef.afterClosed()
+      .pipe(
+        switchMap((result) => {
+          if (result) {
+            return this.accessoryService.delete(accessory.id)
+              .pipe(
+                catchError((error) => {
+                  this.getAll();
+                  return throwError(() => new Error(error));
+                })
+              );
+          } else {
+            return of();
+          }
+        }),
+        tap(() => {
+          location.reload();
+        })
+      ).subscribe(
+        (_result) => { },
+        (_error) => { }
+      );
   }
 
 }

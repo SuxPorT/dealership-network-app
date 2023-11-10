@@ -1,9 +1,176 @@
 <div class="content-container">
-  <p class="h1"><mat-icon class="icon-display">person</mat-icon> Owners</p>
+  <div class="row">
+    <div class="col-12" *ngIf="this.isEditMode; else header">
+      <h4 class="text-center" *ngIf="this.isEditMode">
+        <strong>Edit Owner</strong>
+      </h4>
+    </div>
 
-  <hr />
+    <ng-template #header>
+      <p class="h1"><mat-icon class="icon-display">person</mat-icon> Owners</p>
+      <hr />
+    </ng-template>
+  </div>
 
-  <div class="mat-elevation-z8 mt-2">
+  <form [formGroup]="this.form" (ngSubmit)="onSubmit()">
+    <div class="row align-items-center">
+      <div
+        [ngClass]="{
+          'col-md-9': this.isEditMode,
+          'col-lg-2': !this.isEditMode
+        }"
+      >
+        <mat-form-field class="field-width" appearance="fill">
+          <mat-label>CPF/CNPJ</mat-label>
+          <input matInput formControlName="cpfCnpj" required />
+
+          <mat-error *ngIf="this.form.controls['cpfCnpj'].hasError('required')">
+            CPF/CNPJ is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div
+        [ngClass]="{
+          'col-md-3': this.isEditMode,
+          'col-lg-2': !this.isEditMode
+        }"
+      >
+        <mat-form-field class="field-width" appearance="fill">
+          <mat-label>Hiring Type</mat-label>
+          <input matInput formControlName="hiringType" required />
+
+          <mat-error
+            *ngIf="this.form.controls['hiringType'].hasError('required')"
+          >
+            Hiring Type is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div
+        [ngClass]="{
+          'col-md-8': this.isEditMode,
+          'col-lg-2': !this.isEditMode
+        }"
+      >
+        <mat-form-field class="field-width" appearance="fill">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" required />
+
+          <mat-error *ngIf="this.form.controls['name'].hasError('required')">
+            Name is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div
+        [ngClass]="{
+          'col-md-4': this.isEditMode,
+          'col-lg-2': !this.isEditMode
+        }"
+      >
+        <mat-form-field class="field-width" appearance="fill">
+          <mat-label>Birth Date</mat-label>
+          <input matInput formControlName="birthDate" required />
+
+          <mat-error
+            *ngIf="this.form.controls['birthDate'].hasError('required')"
+          >
+            Birth Date is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row align-items-center">
+      <div
+        [ngClass]="{
+          'col-md-6': this.isEditMode,
+          'col-lg-2': !this.isEditMode
+        }"
+      >
+        <mat-form-field class="field-width" appearance="fill">
+          <mat-label>City</mat-label>
+          <input matInput formControlName="city" required />
+
+          <mat-error *ngIf="this.form.controls['city'].hasError('required')">
+            City is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div
+        [ngClass]="{
+          'col-md-2': this.isEditMode,
+          'col-lg-2': !this.isEditMode
+        }"
+      >
+        <mat-form-field class="field-width" appearance="fill">
+          <mat-label>UF</mat-label>
+          <input matInput formControlName="uf" required />
+
+          <mat-error *ngIf="this.form.controls['uf'].hasError('required')">
+            UF is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div
+        [ngClass]="{
+          'col-md-4': this.isEditMode,
+          'col-lg-2': !this.isEditMode
+        }"
+      >
+        <mat-form-field class="field-width" appearance="fill">
+          <mat-label>CEP</mat-label>
+          <input matInput formControlName="cep" required />
+
+          <mat-error *ngIf="this.form.controls['cep'].hasError('required')">
+            CEP is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div
+        [ngClass]="{
+          'col-md-12 mb-4': this.isEditMode,
+          'col-lg-1': !this.isEditMode
+        }"
+      >
+        <mat-checkbox color="primary" matInput formControlName="isActive"
+          >Active</mat-checkbox
+        >
+      </div>
+
+      <div
+        [ngClass]="{
+          'col-md-6': this.isEditMode,
+          'col-lg-5 text-lg-end': !this.isEditMode
+        }"
+      >
+        <button
+          [ngClass]="{
+            'edit-btn': this.isEditMode
+          }"
+          mat-raised-button
+          color="primary"
+        >
+          <mat-icon *ngIf="!this.isEditMode" class="material-icons-add"
+            >add</mat-icon
+          >{{ this.isEditMode ? "Save" : "Create Sale" }}
+        </button>
+      </div>
+
+      <div class="col-md-6" *ngIf="this.isEditMode">
+        <button class="edit-btn" mat-raised-button mat-dialog-close>
+          Cancel
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div class="mat-elevation-z8 mt-2" *ngIf="!this.isEditMode">
     <table
       mat-table
       [dataSource]="this.dataSource"
@@ -11,13 +178,6 @@
       #sort="matSort"
       (matSortChange)="sortChange($event)"
     >
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
-        <td class="col-1" mat-cell *matCellDef="let item">
-          {{ item.id }}
-        </td>
-      </ng-container>
-
       <ng-container matColumnDef="cpfCnpj">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>CPF/CNPJ</th>
         <td class="col-2" mat-cell *matCellDef="let item">
@@ -67,6 +227,15 @@
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="isActive">
+        <th class="col-1" mat-header-cell *matHeaderCellDef mat-sort-header>
+          Active
+        </th>
+        <td mat-cell *matCellDef="let item">
+          <input type="checkbox" [checked]="item.isActive" disabled />
+        </td>
+      </ng-container>
+
       <ng-container matColumnDef="actions">
         <th class="actions" mat-header-cell *matHeaderCellDef>Actions</th>
         <td class="col-2 action-buttons" mat-cell *matCellDef="let item">
@@ -75,6 +244,7 @@
             color="primary"
             class="btn btn-primary"
             matTooltip="Edit"
+            (click)="update(item)"
           >
             <mat-icon class="material-icons">edit</mat-icon>
           </button>
@@ -84,6 +254,7 @@
             color="warn"
             class="btn btn-primary"
             matTooltip="Delete"
+            (click)="delete(item)"
           >
             <mat-icon class="material-icons">delete</mat-icon>
           </button>

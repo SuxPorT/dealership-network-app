@@ -1,9 +1,0 @@
-<div mat-dialog-content class="container" [ngSwitch]="this.data.dialogType">
-  <app-accessory
-    *ngSwitchCase="0"
-    (closeDialogEvent)="this.onNoClick()"
-    (editEvent)="this.onSubmit($event)"
-    [selectedAccessory]="this.data.model"
-    [isEditMode]="true"
-  ></app-accessory>
-</div>

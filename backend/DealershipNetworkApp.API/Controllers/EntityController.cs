@@ -1,18 +1,20 @@
 ﻿using DealershipNetworkApp.Application.Interfaces.Services;
 using DealershipNetworkApp.Core.Entities;
 using DealershipNetworkApp.Core.InputModels;
+using DealershipNetworkApp.Core.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DealershipNetworkApp.API.Controllers
 {
-    public abstract class EntityController<TEntityInpuitModel, TEntity> : ControllerBase
+    public abstract class EntityController<TEntityInpuitModel, TEntity, TEntityViewModel> : ControllerBase
         where TEntityInpuitModel : BaseInputModel
         where TEntity : BaseEntity
+        where TEntityViewModel: BaseViewModel
     {
-        private readonly IBaseService<TEntityInpuitModel, TEntity> _service;
+        private readonly IBaseService<TEntityInpuitModel, TEntity, TEntityViewModel> _service;
 
-        protected EntityController(IBaseService<TEntityInpuitModel, TEntity> service)
+        protected EntityController(IBaseService<TEntityInpuitModel, TEntity, TEntityViewModel> service)
             => _service = service;
 
         [HttpGet]
@@ -80,11 +82,10 @@ namespace DealershipNetworkApp.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await _service.GetById(id);
+            var result = await _service.Remove(id);
             if (result != null)
             {
-                var deleted = await _service.Remove(result);
-                return Ok(deleted);
+                return Ok(result);
             }
 
             return NotFound($"{typeof(TEntity).Name} with id {id} not found");

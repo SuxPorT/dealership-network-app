@@ -1,14 +1,14 @@
-﻿using DealershipNetworkApp.Core.Entities;
-using DealershipNetworkApp.Core.InputModels;
+﻿using DealershipNetworkApp.Core.InputModels;
+using DealershipNetworkApp.Core.ViewModel;
 
 namespace DealershipNetworkApp.Core.Interfaces
 {
     public interface IOwnerRepository
     {
-        Task<IList<Owner>> GetAll();
-        Task<Owner> GetByCpfCnpj(string cpfCnpj);
-        Task<Owner> Add(OwnerInputModel inputModel);
-        Task<Owner> UpdateByCpfCnpj(OwnerInputModel inputModel, string cpfCnpj);
-        Task<Owner> RemoveByCpfCnpj(Owner owner);
+        Task<IList<OwnerViewlModel>> GetAll();
+        Task<OwnerViewlModel> GetByCpfCnpj(string cpfCnpj);
+        Task<OwnerViewlModel> Add(OwnerInputModel inputModel);
+        Task<OwnerViewlModel> UpdateByCpfCnpj(OwnerInputModel inputModel, string cpfCnpj);
+        Task<OwnerViewlModel> RemoveByCpfCnpj(string cpfCnpj);
     }
 }

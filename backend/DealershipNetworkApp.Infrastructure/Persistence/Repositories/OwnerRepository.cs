@@ -2,6 +2,7 @@
 using DealershipNetworkApp.Core.Entities;
 using DealershipNetworkApp.Core.InputModels;
 using DealershipNetworkApp.Core.Interfaces;
+using DealershipNetworkApp.Core.ViewModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace DealershipNetworkApp.Infrastructure.Persistence.Repositories
@@ -17,25 +18,40 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Repositories
             _mapper = mapper;
         }
 
-        public async Task<IList<Owner>> GetAll()
-            => await _context.Owners.ToListAsync();
+        public async Task<IList<OwnerViewlModel>> GetAll()
+        {
+            var entities = await _context.Owners.ToListAsync();
+            var viewModels = entities.Select(_mapper.Map<OwnerViewlModel>).ToList();
 
-        public async Task<Owner> GetByCpfCnpj(string cpfCnpj)
-                => await _context.Owners.FindAsync(cpfCnpj);
+            return viewModels;
+        }
+            
+        public async Task<OwnerViewlModel> GetByCpfCnpj(string cpfCnpj)
+        {
+            var entity = await _context.Owners.FirstOrDefaultAsync(e => e.CpfCnpj == cpfCnpj);
+            if(entity == null)
+            {
+                return null;
+            }
 
-        public async Task<Owner> Add(OwnerInputModel inputModel)
+            var viewModel = _mapper.Map<OwnerViewlModel>(entity);
+            return viewModel;
+        }
+
+        public async Task<OwnerViewlModel> Add(OwnerInputModel inputModel)
         {
             var entity = _mapper.Map<Owner>(inputModel);
 
             _context.Owners.Add(entity);
             await _context.SaveChangesAsync();
 
-            return entity;
+            var viewModel = _mapper.Map<OwnerViewlModel>(entity);
+            return viewModel;
         }
 
-        public async Task<Owner> UpdateByCpfCnpj(OwnerInputModel inputModel, string cpfCnpj)
+        public async Task<OwnerViewlModel> UpdateByCpfCnpj(OwnerInputModel inputModel, string cpfCnpj)
         {
-            var entity = await GetByCpfCnpj(cpfCnpj);
+            var entity = await _context.Owners.FirstOrDefaultAsync(e => e.CpfCnpj == cpfCnpj);
             if (entity == null)
             {
                 return null;
@@ -46,15 +62,23 @@ namespace DealershipNetworkApp.Infrastructure.Persistence.Repositories
             _context.Owners.Update(entity);
             await _context.SaveChangesAsync();
 
-            return entity;
+            var viewModel = _mapper.Map<OwnerViewlModel>(entity);
+            return viewModel;
         }
 
-        public async Task<Owner> RemoveByCpfCnpj(Owner owner)
+        public async Task<OwnerViewlModel> RemoveByCpfCnpj(string cpfCnpj)
         {
-            _context.Owners.Remove(owner);
+            var entity = await _context.Owners.FirstOrDefaultAsync(e => e.CpfCnpj == cpfCnpj);
+            if (entity == null)
+            {
+                return null;
+            }
+
+            _context.Owners.Remove(entity);
             await _context.SaveChangesAsync();
 
-            return owner;
+            var viewModel = _mapper.Map<OwnerViewlModel>(entity);
+            return viewModel;
         }
     }
 }

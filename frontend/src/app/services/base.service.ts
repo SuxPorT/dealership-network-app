@@ -38,8 +38,8 @@ export class BaseService<TModel> {
     );
   }
 
-  delete(id: number): Observable<any> {
-    return this.http.delete(
+  delete(id: number): Observable<TModel> {
+    return this.http.delete<TModel>(
       `${environment.apiUri}/${this.endpoint}/${id}`, this.httpOptions
     );
   }

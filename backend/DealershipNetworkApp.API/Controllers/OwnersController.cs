@@ -79,11 +79,10 @@ namespace DealershipNetworkApp.API.Controllers
         [HttpDelete("DeleteByCpfCnpj/{cpfCnpj}")]
         public async Task<IActionResult> DeleteByCpfCnpj(string cpfCnpj)
         {
-            var result = await _service.GetByCpfCnpj(cpfCnpj);
+            var result = await _service.RemoveByCpfCnpj(cpfCnpj);
             if (result != null)
             {
-                var deleted = await _service.RemoveByCpfCnpj(result);
-                return Ok(deleted);
+                return Ok(result);
             }
 
             return NotFound($"Owner with CPF/CNPJ {cpfCnpj} not found");
