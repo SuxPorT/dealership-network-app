@@ -9,7 +9,7 @@ import { SellerComponent } from './components/views/seller/seller.component';
 import { VehicleComponent } from './components/views/vehicle/vehicle.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', pathMatch: 'full', component: HomeComponent },
   { path: 'home', component: HomeComponent },
   { path: 'accessory', component: AccessoryComponent },
   { path: 'owner', component: OwnerComponent },

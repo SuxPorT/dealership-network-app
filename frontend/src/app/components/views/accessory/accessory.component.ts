@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -35,6 +35,7 @@ export class AccessoryComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
+    private changeDetectorRef: ChangeDetectorRef,
     private accessoryService: AccessoryService
   ) { }
 
@@ -131,7 +132,8 @@ export class AccessoryComponent implements OnInit {
           }
         }),
         tap(() => {
-          location.reload();
+          this.dataSource.data = [...this.dataSource.data];
+          this.changeDetectorRef.detectChanges();
         })
       ).subscribe(
         (_result) => { },
@@ -165,7 +167,8 @@ export class AccessoryComponent implements OnInit {
           }
         }),
         tap(() => {
-          location.reload();
+          this.dataSource.data = [...this.dataSource.data];
+          this.changeDetectorRef.detectChanges();
         })
       ).subscribe(
         (_result) => { },

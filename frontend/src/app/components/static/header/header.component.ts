@@ -8,10 +8,10 @@ import { SidenavService } from 'src/app/services/sidenav.service';
 })
 export class HeaderComponent {
 
-  constructor(private sideNavService: SidenavService) { }
+  constructor(private sidenavService: SidenavService) { }
 
   toggleSidenav(): void {
-    this.sideNavService.toggle();
+    this.sidenavService.toggle();
   }
 
 }

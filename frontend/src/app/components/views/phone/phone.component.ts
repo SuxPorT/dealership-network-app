@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -36,6 +36,7 @@ export class PhoneComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
+    private changeDetectorRef: ChangeDetectorRef,
     private phoneService: PhoneService
   ) { }
 
@@ -106,7 +107,7 @@ export class PhoneComponent implements OnInit {
     phone.number = this.form.controls['number'].value!;
     phone.ownerCpfCnpj = this.form.controls['ownerCpfCnpj'].value!;
     phone.isActive = this.form.controls['isActive'].value!;
-    console.log(phone);
+
     this.phoneService.create(phone).subscribe((result) => {
       if (result) {
         this.clearForm();
@@ -120,8 +121,6 @@ export class PhoneComponent implements OnInit {
       width: '600px',
       data: { model: phone, dialogType: DialogType.EditPhone }
     });
-
-    console.log(phone);
 
     dialogRef.afterClosed()
       .pipe(
@@ -139,7 +138,8 @@ export class PhoneComponent implements OnInit {
           }
         }),
         tap(() => {
-          location.reload();
+          this.dataSource.data = [...this.dataSource.data];
+          this.changeDetectorRef.detectChanges();;
         })
       ).subscribe(
         (_result) => { },
@@ -173,7 +173,8 @@ export class PhoneComponent implements OnInit {
           }
         }),
         tap(() => {
-          location.reload();
+          this.dataSource.data = [...this.dataSource.data];
+          this.changeDetectorRef.detectChanges();;
         })
       ).subscribe(
         (_result) => { },

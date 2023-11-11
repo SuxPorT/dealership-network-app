@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,6 +20,8 @@ import { SellerComponent } from './components/views/seller/seller.component';
 import { VehicleComponent } from './components/views/vehicle/vehicle.component';
 import { EditDialogComponent } from './components/shared/edit-dialog/edit-dialog.component';
 import { DeleteDialogComponent } from './components/shared/delete-dialog/delete-dialog.component';
+import { SnackbarInterceptor } from './interceptor/snackbar.interceptor';
+import { DEFAULT_TIMEOUT, SpinnerInterceptor } from './interceptor/spinner.interceptor';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,21 @@ import { DeleteDialogComponent } from './components/shared/delete-dialog/delete-
     BrowserAnimationsModule,
     AngularMaterialModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SnackbarInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SpinnerInterceptor,
+      multi: true
+    }, {
+      provide: DEFAULT_TIMEOUT,
+      useValue: 30000
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

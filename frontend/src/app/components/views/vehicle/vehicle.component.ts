@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -45,6 +45,7 @@ export class VehicleComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
+    private changeDetectorRef: ChangeDetectorRef,
     private vehicleService: VehicleService
   ) { }
 
@@ -176,7 +177,8 @@ export class VehicleComponent implements OnInit {
           }
         }),
         tap(() => {
-          location.reload();
+          this.dataSource.data = [...this.dataSource.data];
+          this.changeDetectorRef.detectChanges();;
         })
       ).subscribe(
         (_result) => { },
@@ -210,7 +212,8 @@ export class VehicleComponent implements OnInit {
           }
         }),
         tap(() => {
-          location.reload();
+          this.dataSource.data = [...this.dataSource.data];
+          this.changeDetectorRef.detectChanges();;
         })
       ).subscribe(
         (_result) => { },

@@ -1,3 +1,9 @@
+<div class="overlay" *ngIf="this.isVisible()">
+  <div class="center">
+    <mat-spinner [diameter]="50"></mat-spinner>
+  </div>
+</div>
+
 <div class="body-container">
   <mat-sidenav-container class="sidenav-container">
     <mat-sidenav #sidenav mode="side" [opened]="true">

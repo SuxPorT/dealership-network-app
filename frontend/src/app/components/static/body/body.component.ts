@@ -1,6 +1,7 @@
-import { AfterViewInit, Component, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { SidenavService } from 'src/app/services/sidenav.service';
+import { SpinnerService } from 'src/app/services/spinner.service';
 
 @Component({
   selector: 'app-body',
@@ -9,12 +10,19 @@ import { SidenavService } from 'src/app/services/sidenav.service';
 })
 export class BodyComponent implements AfterViewInit {
 
-  @ViewChildren('sidenav') public sidenav: QueryList<MatSidenav>;
+  @ViewChild('sidenav') public sidenav: MatSidenav;
 
-  constructor(private sidenavService: SidenavService) { }
+  constructor(
+    private spinnerService: SpinnerService,
+    private sidenavService: SidenavService
+  ) { }
 
-  public ngAfterViewInit(): void {
-    this.sidenavService.setSidenav(this.sidenav.first);
+  ngAfterViewInit(): void {
+    this.sidenavService.setSidenav(this.sidenav);
+  }
+
+  isVisible(): boolean {
+    return this.spinnerService.isVisible();
   }
 
 }

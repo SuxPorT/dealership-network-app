@@ -7,13 +7,15 @@ import { MatSidenav } from '@angular/material/sidenav';
 export class SidenavService {
 
   private sidenav: MatSidenav;
+  public isOpen = true;
 
-  public setSidenav(sidenav: MatSidenav) {
+  setSidenav(sidenav: MatSidenav) {
     this.sidenav = sidenav;
   }
 
-  public toggle(): void {
+  toggle(): void {
     this.sidenav.toggle();
+    this.isOpen = !this.isOpen;
   }
 
 }

@@ -67,7 +67,8 @@
       >
         <button
           [ngClass]="{
-            'edit-btn': this.isEditMode
+            'edit-btn': this.isEditMode,
+            'hover-effect': !this.isEditMode
           }"
           mat-raised-button
           color="primary"
