@@ -142,7 +142,14 @@
       >
         <mat-form-field class="field-width" appearance="fill">
           <mat-label>Owner</mat-label>
-          <input matInput formControlName="ownerCpfCnpj" required />
+          <mat-select formControlName="ownerCpfCnpj" required>
+            <mat-option
+              *ngFor="let owner of this.ownerList"
+              [value]="owner.cpfCnpj"
+            >
+              {{ owner.name }} - {{ owner.cpfCnpj }}
+            </mat-option>
+          </mat-select>
 
           <mat-error
             *ngIf="this.form.controls['ownerCpfCnpj'].hasError('required')"
@@ -255,7 +262,7 @@
       <ng-container matColumnDef="ownerCpfCnpj">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Owner</th>
         <td class="col-1" mat-cell *matCellDef="let item">
-          {{ item.ownerCpfCnpj }}
+          {{ filterOwner(item.ownerCpfCnpj) }}
         </td>
       </ng-container>
 

@@ -10,6 +10,8 @@ import { Phone } from 'src/app/models/phone.model';
 import { PhoneService } from 'src/app/services/phone.service';
 import { DeleteDialogComponent } from '../../shared/delete-dialog/delete-dialog.component';
 import { EditDialogComponent } from '../../shared/edit-dialog/edit-dialog.component';
+import { Owner } from 'src/app/models/owner.model';
+import { OwnerService } from 'src/app/services/owner.service';
 
 @Component({
   selector: 'app-phone',
@@ -22,14 +24,17 @@ export class PhoneComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @Input() phone: Phone;
+  @Input() owner: Owner;
   @Input() isEditMode: boolean = false;
   @Output() editEvent = new EventEmitter<Phone>();
 
   displayedColumns = ["id", "number", "ownerCpfCnpj", "isActive", "actions"];
   dataSource!: MatTableDataSource<Phone>;
 
+  ownersList: Owner[] = [];
+
   form = new FormGroup({
-    number: new FormControl('', [Validators.required]),
+    number: new FormControl('', [Validators.required, Validators.minLength(9)]),
     ownerCpfCnpj: new FormControl('', [Validators.required]),
     isActive: new FormControl(false)
   });
@@ -37,14 +42,16 @@ export class PhoneComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private changeDetectorRef: ChangeDetectorRef,
-    private phoneService: PhoneService
+    private phoneService: PhoneService,
+    private ownerService: OwnerService
   ) { }
 
   ngOnInit(): void {
     if (this.isEditMode) {
       this.fillForm();
     } else {
-      this.getAll();
+      this.getOwners();
+      this.getPhones();
     }
   }
 
@@ -92,7 +99,21 @@ export class PhoneComponent implements OnInit {
     this.editEvent.emit(this.phone);
   }
 
-  getAll(): void {
+  filterOwner(cpfCnpj: string) {
+    const owner = this.ownersList.find(x => x.cpfCnpj == cpfCnpj);
+
+    return `${owner?.name} - ${owner?.cpfCnpj}`;
+  }
+
+  getOwners(): void {
+    this.ownerService.getAll().subscribe((result) => {
+      if (result) {
+        this.ownersList = result;
+      }
+    });
+  }
+
+  getPhones(): void {
     this.phoneService.getAll().subscribe((result) => {
       if (result) {
         this.dataSource = new MatTableDataSource<Phone>(result);
@@ -111,7 +132,7 @@ export class PhoneComponent implements OnInit {
     this.phoneService.create(phone).subscribe((result) => {
       if (result) {
         this.clearForm();
-        this.getAll();
+        this.getPhones();
       }
     });
   }
@@ -119,7 +140,10 @@ export class PhoneComponent implements OnInit {
   update(phone: Phone): void {
     const dialogRef = this.dialog.open(EditDialogComponent, {
       width: '600px',
-      data: { model: phone, dialogType: DialogType.EditPhone }
+      data: {
+        model: phone,
+        dialogType: DialogType.EditPhone
+      }
     });
 
     dialogRef.afterClosed()
@@ -129,7 +153,7 @@ export class PhoneComponent implements OnInit {
             return this.phoneService.update(phone, phone.id)
               .pipe(
                 catchError((error) => {
-                  this.getAll();
+                  this.getPhones();
                   return throwError(() => new Error(error));
                 })
               );
@@ -139,7 +163,7 @@ export class PhoneComponent implements OnInit {
         }),
         tap(() => {
           this.dataSource.data = [...this.dataSource.data];
-          this.changeDetectorRef.detectChanges();;
+          this.changeDetectorRef.detectChanges();
         })
       ).subscribe(
         (_result) => { },
@@ -164,7 +188,7 @@ export class PhoneComponent implements OnInit {
             return this.phoneService.delete(phone.id)
               .pipe(
                 catchError((error) => {
-                  this.getAll();
+                  this.getPhones();
                   return throwError(() => new Error(error));
                 })
               );
@@ -174,7 +198,7 @@ export class PhoneComponent implements OnInit {
         }),
         tap(() => {
           this.dataSource.data = [...this.dataSource.data];
-          this.changeDetectorRef.detectChanges();;
+          this.changeDetectorRef.detectChanges();
         })
       ).subscribe(
         (_result) => { },

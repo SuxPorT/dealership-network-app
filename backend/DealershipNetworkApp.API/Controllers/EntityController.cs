@@ -12,7 +12,7 @@ namespace DealershipNetworkApp.API.Controllers
         where TEntity : BaseEntity
         where TEntityViewModel: BaseViewModel
     {
-        private readonly IBaseService<TEntityInpuitModel, TEntity, TEntityViewModel> _service;
+        protected readonly IBaseService<TEntityInpuitModel, TEntity, TEntityViewModel> _service;
 
         protected EntityController(IBaseService<TEntityInpuitModel, TEntity, TEntityViewModel> service)
             => _service = service;
@@ -34,25 +34,6 @@ namespace DealershipNetworkApp.API.Controllers
             }
 
             return NotFound($"{typeof(TEntity).Name} with id {id} not found");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] TEntityInpuitModel inputModel)
-        {
-            try
-            {
-                if (inputModel != null)
-                {
-                    var result = await _service.Add(inputModel);
-                    return Ok(result);
-                }
-
-                return BadRequest("Invalid input model");
-            }
-            catch (DbUpdateException)
-            {
-                return BadRequest("Invalid values from input model");
-            }
         }
 
         [HttpPut("{id}")]

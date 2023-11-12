@@ -10,6 +10,8 @@ import { Vehicle } from 'src/app/models/vehicle.model';
 import { VehicleService } from 'src/app/services/vehicle.service';
 import { DeleteDialogComponent } from '../../shared/delete-dialog/delete-dialog.component';
 import { EditDialogComponent } from '../../shared/edit-dialog/edit-dialog.component';
+import { Owner } from 'src/app/models/owner.model';
+import { OwnerService } from 'src/app/services/owner.service';
 
 @Component({
   selector: 'app-vehicle',
@@ -22,6 +24,7 @@ export class VehicleComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @Input() vehicle: Vehicle;
+  @Input() owner: Owner;
   @Input() isEditMode: boolean = false;
   @Output() editEvent = new EventEmitter<Vehicle>();
 
@@ -30,6 +33,8 @@ export class VehicleComponent implements OnInit {
     "mileage", "systemVersion", "ownerCpfCnpj", "isActive", "actions"
   ];
   dataSource!: MatTableDataSource<Vehicle>;
+
+  ownerList: Owner[] = [];
 
   form = new FormGroup({
     chassisNumber: new FormControl('', [Validators.required]),
@@ -46,14 +51,16 @@ export class VehicleComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private changeDetectorRef: ChangeDetectorRef,
-    private vehicleService: VehicleService
+    private vehicleService: VehicleService,
+    private ownerService: OwnerService
   ) { }
 
   ngOnInit(): void {
     if (this.isEditMode) {
       this.fillForm();
     } else {
-      this.getAll();
+      this.getOwners();
+      this.getVehicles();
     }
   }
 
@@ -125,7 +132,21 @@ export class VehicleComponent implements OnInit {
     this.editEvent.emit(this.vehicle);
   }
 
-  getAll(): void {
+  filterOwner(cpfCnpj: string) {
+    const owner = this.ownerList.find(x => x.cpfCnpj == cpfCnpj);
+
+    return `${owner?.name} - ${owner?.cpfCnpj}`;
+  }
+
+  getOwners(): void {
+    this.ownerService.getAll().subscribe((result) => {
+      if (result) {
+        this.ownerList = result;
+      }
+    });
+  }
+
+  getVehicles(): void {
     this.vehicleService.getAll().subscribe((result) => {
       if (result) {
         this.dataSource = new MatTableDataSource<Vehicle>(result);
@@ -150,7 +171,7 @@ export class VehicleComponent implements OnInit {
     this.vehicleService.create(vehicle).subscribe((result) => {
       if (result) {
         this.clearForm();
-        this.getAll();
+        this.getVehicles();
       }
     });
   }
@@ -168,7 +189,7 @@ export class VehicleComponent implements OnInit {
             return this.vehicleService.update(vehicle, vehicle.chassisNumber)
               .pipe(
                 catchError((error) => {
-                  this.getAll();
+                  this.getVehicles();
                   return throwError(() => new Error(error));
                 })
               );
@@ -178,7 +199,7 @@ export class VehicleComponent implements OnInit {
         }),
         tap(() => {
           this.dataSource.data = [...this.dataSource.data];
-          this.changeDetectorRef.detectChanges();;
+          this.changeDetectorRef.detectChanges();
         })
       ).subscribe(
         (_result) => { },
@@ -203,7 +224,7 @@ export class VehicleComponent implements OnInit {
             return this.vehicleService.delete(vehicle.chassisNumber)
               .pipe(
                 catchError((error) => {
-                  this.getAll();
+                  this.getVehicles();
                   return throwError(() => new Error(error));
                 })
               );
@@ -213,7 +234,7 @@ export class VehicleComponent implements OnInit {
         }),
         tap(() => {
           this.dataSource.data = [...this.dataSource.data];
-          this.changeDetectorRef.detectChanges();;
+          this.changeDetectorRef.detectChanges();
         })
       ).subscribe(
         (_result) => { },

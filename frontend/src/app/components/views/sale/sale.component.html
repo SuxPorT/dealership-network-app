@@ -38,7 +38,15 @@
       >
         <mat-form-field class="field-width" appearance="fill">
           <mat-label>Vehicle</mat-label>
-          <input matInput formControlName="vehicleChassisNumber" required />
+          <mat-select formControlName="vehicleChassisNumber" required>
+            <mat-option
+              *ngFor="let vehicle of this.vehicleList"
+              [value]="vehicle.chassisNumber"
+            >
+              {{ vehicle.model }} {{ vehicle.year }} -
+              {{ vehicle.chassisNumber }}
+            </mat-option>
+          </mat-select>
 
           <mat-error
             *ngIf="
@@ -58,7 +66,14 @@
       >
         <mat-form-field class="field-width" appearance="fill">
           <mat-label>Seller</mat-label>
-          <input matInput formControlName="sellerId" required />
+          <mat-select formControlName="sellerId" required>
+            <mat-option
+              *ngFor="let seller of this.sellerList"
+              [value]="seller.id"
+            >
+              {{ seller.name }}
+            </mat-option>
+          </mat-select>
 
           <mat-error
             *ngIf="this.form.controls['sellerId'].hasError('required')"
@@ -132,14 +147,21 @@
       <ng-container matColumnDef="vehicleChassisNumber">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Vehicle</th>
         <td class="col-2" mat-cell *matCellDef="let item">
-          {{ item.vehicleChassisNumber }}
+          {{ filterVehicle(item.vehicleChassisNumber) }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="sellerId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Seller</th>
         <td class="col-2" mat-cell *matCellDef="let item">
-          {{ item.sellerId }}
+          {{ filterSeller(item.sellerId) }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+        <td class="col-2" mat-cell *matCellDef="let item">
+          {{ item.createdAt | date : "dd/MM/yyyy - hh:mm:ss" }}
         </td>
       </ng-container>
 
@@ -154,7 +176,7 @@
 
       <ng-container matColumnDef="actions">
         <th class="actions" mat-header-cell *matHeaderCellDef>Actions</th>
-        <td class="col-1 action-buttons" mat-cell *matCellDef="let item">
+        <td class="col-2 action-buttons" mat-cell *matCellDef="let item">
           <button
             mat-raised-button
             color="primary"

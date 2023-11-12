@@ -52,7 +52,7 @@ export class OwnerComponent implements OnInit {
     if (this.isEditMode) {
       this.fillForm();
     } else {
-      this.getAll();
+      this.getOwners();
     }
   }
 
@@ -120,7 +120,7 @@ export class OwnerComponent implements OnInit {
     this.editEvent.emit(this.owner);
   }
 
-  getAll(): void {
+  getOwners(): void {
     this.ownerService.getAll().subscribe((result) => {
       if (result) {
         this.dataSource = new MatTableDataSource<Owner>(result);
@@ -144,7 +144,7 @@ export class OwnerComponent implements OnInit {
     this.ownerService.create(owner).subscribe((result) => {
       if (result) {
         this.clearForm();
-        this.getAll();
+        this.getOwners();
       }
     });
   }
@@ -162,7 +162,7 @@ export class OwnerComponent implements OnInit {
             return this.ownerService.update(owner, owner.cpfCnpj)
               .pipe(
                 catchError((error) => {
-                  this.getAll();
+                  this.getOwners();
                   return throwError(() => new Error(error));
                 })
               );
@@ -172,7 +172,7 @@ export class OwnerComponent implements OnInit {
         }),
         tap(() => {
           this.dataSource.data = [...this.dataSource.data];
-          this.changeDetectorRef.detectChanges();;
+          this.changeDetectorRef.detectChanges();
         })
       ).subscribe(
         (_result) => { },
@@ -197,7 +197,7 @@ export class OwnerComponent implements OnInit {
             return this.ownerService.delete(owner.cpfCnpj)
               .pipe(
                 catchError((error) => {
-                  this.getAll();
+                  this.getOwners();
                   return throwError(() => new Error(error));
                 })
               );
@@ -207,7 +207,7 @@ export class OwnerComponent implements OnInit {
         }),
         tap(() => {
           this.dataSource.data = [...this.dataSource.data];
-          this.changeDetectorRef.detectChanges();;
+          this.changeDetectorRef.detectChanges();
         })
       ).subscribe(
         (_result) => { },

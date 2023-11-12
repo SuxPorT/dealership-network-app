@@ -38,10 +38,29 @@ export class SnackbarInterceptor implements HttpInterceptor {
             break;
         }
       }),
-      catchError(error => {
-        this.snackBar.open('Error while saving.', 'Close',
+      catchError((errorResponse) => {
+        const errorList = errorResponse.error;
+        let errorSnackbarMessage = 'An error occurred while saving.';
+
+        if (errorList?.errors) {
+          for (const key in errorList.errors) {
+            if (errorList.errors.hasOwnProperty(key)) {
+              errorSnackbarMessage += `\n${key}: ${errorList.errors[key][0]}`;
+            }
+          }
+        } else {
+          errorSnackbarMessage += `\n${errorResponse.error}`;
+        }
+
+        this.snackBar.open(errorSnackbarMessage, 'Close',
           { duration: this.duration, panelClass: 'error-snackbar' });
-        return throwError(() => new Error(error));
+
+        const statusCode = errorList?.status || errorResponse.status;
+        const errorMessage = errorList?.title || errorResponse.error;
+        const traceId = ` (Trace ID: ${errorList?.traceId}`;
+        const formattedError = `HTTP Error ${statusCode}: ${errorMessage}${traceId}`;
+
+        throw new Error(formattedError);
       })
     );
   }

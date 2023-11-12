@@ -8,16 +8,20 @@ body {
 }
 
 .success-snackbar > div {
-  margin-bottom: 20px;
   background-color: #0d860d !important;
+}
+
+.error-snackbar > div {
+  background-color: red !important;
+}
+
+.success-snackbar > div,
+.error-snackbar > div {
+  margin-bottom: 20px;
+
   white-space: pre-wrap;
 
   & button {
     color: white !important;
   }
-}
-
-.error-snackbar > div {
-  background-color: red !important;
-  white-space: pre-wrap;
 }

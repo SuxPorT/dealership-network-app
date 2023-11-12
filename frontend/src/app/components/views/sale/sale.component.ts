@@ -10,6 +10,10 @@ import { Sale } from 'src/app/models/sale.model';
 import { SaleService } from 'src/app/services/sale.service';
 import { DeleteDialogComponent } from '../../shared/delete-dialog/delete-dialog.component';
 import { EditDialogComponent } from '../../shared/edit-dialog/edit-dialog.component';
+import { Vehicle } from 'src/app/models/vehicle.model';
+import { Seller } from 'src/app/models/seller.model';
+import { VehicleService } from 'src/app/services/vehicle.service';
+import { SellerService } from 'src/app/services/seller.service';
 
 @Component({
   selector: 'app-sale',
@@ -22,14 +26,19 @@ export class SaleComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @Input() sale: Sale;
+  @Input() vehicle: Vehicle;
+  @Input() seller: Seller;
   @Input() isEditMode: boolean = false;
   @Output() editEvent = new EventEmitter<Sale>();
 
   displayedColumns = [
-    "id", "price", "vehicleChassisNumber",
-    "sellerId", "isActive", "actions"
+    "id", "price", "vehicleChassisNumber", "sellerId",
+    "createdAt", "isActive", "actions"
   ];
   dataSource!: MatTableDataSource<Sale>;
+
+  vehicleList: Vehicle[] = [];
+  sellerList: Seller[] = [];
 
   form = new FormGroup({
     price: new FormControl(0, [Validators.required]),
@@ -41,14 +50,18 @@ export class SaleComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private changeDetectorRef: ChangeDetectorRef,
-    private saleService: SaleService
+    private saleService: SaleService,
+    private vehicleService: VehicleService,
+    private sellerService: SellerService
   ) { }
 
   ngOnInit(): void {
     if (this.isEditMode) {
       this.fillForm();
     } else {
-      this.getAll();
+      this.getVehicles();
+      this.getSellers();
+      this.getSales();
     }
   }
 
@@ -100,7 +113,35 @@ export class SaleComponent implements OnInit {
     this.editEvent.emit(this.sale);
   }
 
-  getAll(): void {
+  filterVehicle(chassisNumber: string) {
+    const vehicle = this.vehicleList.find(x => x.chassisNumber == chassisNumber);
+
+    return `${vehicle?.model} ${vehicle?.year} - ${vehicle?.chassisNumber}`;
+  }
+
+  filterSeller(id: number) {
+    const seller = this.sellerList.find(x => x.id == id);
+
+    return seller?.name;
+  }
+
+  getVehicles() {
+    this.vehicleService.getAll().subscribe((result) => {
+      if (result) {
+        this.vehicleList = result;
+      }
+    });
+  }
+
+  getSellers() {
+    this.sellerService.getAll().subscribe((result) => {
+      if (result) {
+        this.sellerList = result;
+      }
+    });
+  }
+
+  getSales(): void {
     this.saleService.getAll().subscribe((result) => {
       if (result) {
         this.dataSource = new MatTableDataSource<Sale>(result);
@@ -120,7 +161,7 @@ export class SaleComponent implements OnInit {
     this.saleService.create(sale).subscribe((result) => {
       if (result) {
         this.clearForm();
-        this.getAll();
+        this.getSales();
       }
     });
   }
@@ -138,7 +179,7 @@ export class SaleComponent implements OnInit {
             return this.saleService.update(sale, sale.id)
               .pipe(
                 catchError((error) => {
-                  this.getAll();
+                  this.getSales();
                   return throwError(() => new Error(error));
                 })
               );
@@ -148,7 +189,7 @@ export class SaleComponent implements OnInit {
         }),
         tap(() => {
           this.dataSource.data = [...this.dataSource.data];
-          this.changeDetectorRef.detectChanges();;
+          this.changeDetectorRef.detectChanges();
         })
       ).subscribe(
         (_result) => { },
@@ -173,7 +214,7 @@ export class SaleComponent implements OnInit {
             return this.saleService.delete(sale.id)
               .pipe(
                 catchError((error) => {
-                  this.getAll();
+                  this.getSales();
                   return throwError(() => new Error(error));
                 })
               );
@@ -183,7 +224,7 @@ export class SaleComponent implements OnInit {
         }),
         tap(() => {
           this.dataSource.data = [...this.dataSource.data];
-          this.changeDetectorRef.detectChanges();;
+          this.changeDetectorRef.detectChanges();
         })
       ).subscribe(
         (_result) => { },

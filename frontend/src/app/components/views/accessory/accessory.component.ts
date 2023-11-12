@@ -43,7 +43,7 @@ export class AccessoryComponent implements OnInit {
     if (this.isEditMode) {
       this.fillForm();
     } else {
-      this.getAll();
+      this.getAccessories();
     }
   }
 
@@ -87,7 +87,7 @@ export class AccessoryComponent implements OnInit {
     this.editEvent.emit(this.accessory);
   }
 
-  getAll(): void {
+  getAccessories(): void {
     this.accessoryService.getAll().subscribe((result) => {
       if (result) {
         this.dataSource = new MatTableDataSource<Accessory>(result);
@@ -105,7 +105,7 @@ export class AccessoryComponent implements OnInit {
     this.accessoryService.create(accessory).subscribe((result) => {
       if (result) {
         this.clearForm();
-        this.getAll();
+        this.getAccessories();
       }
     });
   }
@@ -123,7 +123,7 @@ export class AccessoryComponent implements OnInit {
             return this.accessoryService.update(accessory, accessory.id)
               .pipe(
                 catchError((error) => {
-                  this.getAll();
+                  this.getAccessories();
                   return throwError(() => new Error(error));
                 })
               );
@@ -158,7 +158,7 @@ export class AccessoryComponent implements OnInit {
             return this.accessoryService.delete(accessory.id)
               .pipe(
                 catchError((error) => {
-                  this.getAll();
+                  this.getAccessories();
                   return throwError(() => new Error(error));
                 })
               );

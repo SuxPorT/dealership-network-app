@@ -44,7 +44,7 @@ export class SellerComponent implements OnInit {
     if (this.isEditMode) {
       this.fillForm();
     } else {
-      this.getAll();
+      this.getSellers();
     }
   }
 
@@ -92,7 +92,7 @@ export class SellerComponent implements OnInit {
     this.editEvent.emit(this.seller);
   }
 
-  getAll(): void {
+  getSellers(): void {
     this.sellerService.getAll().subscribe((result) => {
       if (result) {
         this.dataSource = new MatTableDataSource<Seller>(result);
@@ -111,7 +111,7 @@ export class SellerComponent implements OnInit {
     this.sellerService.create(seller).subscribe((result) => {
       if (result) {
         this.clearForm();
-        this.getAll();
+        this.getSellers();
       }
     });
   }
@@ -129,7 +129,7 @@ export class SellerComponent implements OnInit {
             return this.sellerService.update(seller, seller.id)
               .pipe(
                 catchError((error) => {
-                  this.getAll();
+                  this.getSellers();
                   return throwError(() => new Error(error));
                 })
               );
@@ -139,7 +139,7 @@ export class SellerComponent implements OnInit {
         }),
         tap(() => {
           this.dataSource.data = [...this.dataSource.data];
-          this.changeDetectorRef.detectChanges();;
+          this.changeDetectorRef.detectChanges();
         })
       ).subscribe(
         (_result) => { },
@@ -164,7 +164,7 @@ export class SellerComponent implements OnInit {
             return this.sellerService.delete(seller.id)
               .pipe(
                 catchError((error) => {
-                  this.getAll();
+                  this.getSellers();
                   return throwError(() => new Error(error));
                 })
               );
@@ -174,7 +174,7 @@ export class SellerComponent implements OnInit {
         }),
         tap(() => {
           this.dataSource.data = [...this.dataSource.data];
-          this.changeDetectorRef.detectChanges();;
+          this.changeDetectorRef.detectChanges();
         })
       ).subscribe(
         (_result) => { },

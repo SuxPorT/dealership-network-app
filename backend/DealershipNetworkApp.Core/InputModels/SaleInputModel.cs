@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using DealershipNetworkApp.Core.Entities;
 
 namespace DealershipNetworkApp.Core.InputModels
 {
@@ -16,6 +15,5 @@ namespace DealershipNetworkApp.Core.InputModels
 
         [Required(ErrorMessage = "The \"sellerId\" field is required")]
         public int SellerId { get; set; }
-        public Seller Seller { get; set; }
     }
 }

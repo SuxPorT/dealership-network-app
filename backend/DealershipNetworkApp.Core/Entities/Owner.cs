@@ -21,17 +21,17 @@ namespace DealershipNetworkApp.Core.Entities
         public string HiringType { get; set; }
 
         [Required(ErrorMessage = "The \"name\" field is requried")]
-        [MaxLength(50, ErrorMessage = "The name must have a maximum of 50 characters")]
+        [MaxLength(20, ErrorMessage = "The name must have a maximum of 50 characters")]
         public string Name { get; set; }
 
         [Required(ErrorMessage = "The \"email\" field is required")]
-        [MaxLength(50, ErrorMessage = "The email must have a maximum of 50 characters")]
+        [MaxLength(20, ErrorMessage = "The email must have a maximum of 50 characters")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "The \"birthDate\" field is required")]
         public DateTime BirthDate { get; set; }
 
-        [MaxLength(50, ErrorMessage = "The city must have a maximum of 50 characters")]
+        [MaxLength(15, ErrorMessage = "The city must have a maximum of 50 characters")]
         public string City { get; set; }
 
         [MaxLength(40, ErrorMessage = "The UF must have a maximum of 50 characters")]
