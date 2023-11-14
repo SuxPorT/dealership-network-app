@@ -16,7 +16,7 @@
     <div class="row align-items-center">
       <div
         [ngClass]="{
-          'col-md-12': this.isEditMode,
+          'col-md-4': this.isEditMode,
           'col-lg-2': !this.isEditMode
         }"
       >
@@ -24,15 +24,26 @@
           <mat-label>Price</mat-label>
           <input matInput formControlName="price" required />
 
-          <mat-error *ngIf="this.form.controls['price'].hasError('required')">
-            Price is <strong>required</strong>
+          <mat-error *ngIf="this.form.controls['price'].hasError('required')"
+            >Price is <strong>required</strong>
           </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div *ngIf="this.isEditMode" class="col-md-6 ms-auto">
+        <mat-form-field class="field-width" appearance="fill">
+          <mat-label>Date</mat-label>
+          <input
+            matInput
+            [value]="this.sale.createdAt | date : 'dd/MM/yyyy - hh:mm:ss'"
+            disabled="true"
+          />
         </mat-form-field>
       </div>
 
       <div
         [ngClass]="{
-          'col-md-12': this.isEditMode,
+          'col-md-6': this.isEditMode,
           'col-lg-2': !this.isEditMode
         }"
       >
@@ -40,7 +51,7 @@
           <mat-label>Vehicle</mat-label>
           <mat-select formControlName="vehicleChassisNumber" required>
             <mat-option
-              *ngFor="let vehicle of this.vehicleList"
+              *ngFor="let vehicle of this.vehiclesList"
               [value]="vehicle.chassisNumber"
             >
               {{ vehicle.model }} {{ vehicle.year }} -
@@ -52,15 +63,14 @@
             *ngIf="
               this.form.controls['vehicleChassisNumber'].hasError('required')
             "
-          >
-            Vehicle is <strong>required</strong>
+            >Vehicle is <strong>required</strong>
           </mat-error>
         </mat-form-field>
       </div>
 
       <div
         [ngClass]="{
-          'col-md-12': this.isEditMode,
+          'col-md-6': this.isEditMode,
           'col-lg-2': !this.isEditMode
         }"
       >
@@ -68,17 +78,15 @@
           <mat-label>Seller</mat-label>
           <mat-select formControlName="sellerId" required>
             <mat-option
-              *ngFor="let seller of this.sellerList"
+              *ngFor="let seller of this.sellersList"
               [value]="seller.id"
             >
               {{ seller.name }}
             </mat-option>
           </mat-select>
 
-          <mat-error
-            *ngIf="this.form.controls['sellerId'].hasError('required')"
-          >
-            Seller is <strong>required</strong>
+          <mat-error *ngIf="this.form.controls['sellerId'].hasError('required')"
+            >Seller is <strong>required</strong>
           </mat-error>
         </mat-form-field>
       </div>

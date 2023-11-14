@@ -24,8 +24,9 @@ export class VehicleComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @Input() vehicle: Vehicle;
-  @Input() owner: Owner;
+  @Input() ownersList: Owner[] = [];
   @Input() isEditMode: boolean = false;
+
   @Output() editEvent = new EventEmitter<Vehicle>();
 
   displayedColumns = [
@@ -34,16 +35,22 @@ export class VehicleComponent implements OnInit {
   ];
   dataSource!: MatTableDataSource<Vehicle>;
 
-  ownerList: Owner[] = [];
-
   form = new FormGroup({
-    chassisNumber: new FormControl('', [Validators.required]),
-    model: new FormControl('', [Validators.required]),
-    year: new FormControl(0, [Validators.required]),
-    color: new FormControl('', [Validators.required]),
-    price: new FormControl(0, [Validators.required]),
-    mileage: new FormControl(0, [Validators.required]),
-    systemVersion: new FormControl('', [Validators.required]),
+    chassisNumber: new FormControl('', [
+      Validators.required, Validators.maxLength(17)
+    ]),
+    model: new FormControl('', [
+      Validators.required, Validators.maxLength(15)
+    ]),
+    year: new FormControl<any>(null, [Validators.required]),
+    color: new FormControl('', [
+      Validators.required, Validators.maxLength(10)
+    ]),
+    price: new FormControl<any>(null, [Validators.required]),
+    mileage: new FormControl<any>(null, [Validators.required]),
+    systemVersion: new FormControl('', [
+      Validators.required, Validators.maxLength(10)
+    ]),
     ownerCpfCnpj: new FormControl('', [Validators.required]),
     isActive: new FormControl(false)
   });
@@ -94,6 +101,8 @@ export class VehicleComponent implements OnInit {
     this.form.controls['systemVersion'].setValue(this.vehicle.systemVersion);
     this.form.controls['ownerCpfCnpj'].setValue(this.vehicle.ownerCpfCnpj);
     this.form.controls['isActive'].setValue(this.vehicle.isActive);
+
+    this.form.controls['chassisNumber'].disable();
   }
 
   clearForm(): void {
@@ -133,7 +142,7 @@ export class VehicleComponent implements OnInit {
   }
 
   filterOwner(cpfCnpj: string) {
-    const owner = this.ownerList.find(x => x.cpfCnpj == cpfCnpj);
+    const owner = this.ownersList.find(x => x.cpfCnpj == cpfCnpj);
 
     return `${owner?.name} - ${owner?.cpfCnpj}`;
   }
@@ -141,7 +150,7 @@ export class VehicleComponent implements OnInit {
   getOwners(): void {
     this.ownerService.getAll().subscribe((result) => {
       if (result) {
-        this.ownerList = result;
+        this.ownersList = result;
       }
     });
   }
@@ -179,7 +188,11 @@ export class VehicleComponent implements OnInit {
   update(vehicle: Vehicle): void {
     const dialogRef = this.dialog.open(EditDialogComponent, {
       width: '600px',
-      data: { model: vehicle, dialogType: DialogType.EditVehicle }
+      data: {
+        model: vehicle,
+        owners: this.ownersList,
+        dialogType: DialogType.EditVehicle
+      }
     });
 
     dialogRef.afterClosed()

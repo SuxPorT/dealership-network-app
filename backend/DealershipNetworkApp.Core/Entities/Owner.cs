@@ -31,13 +31,13 @@ namespace DealershipNetworkApp.Core.Entities
         [Required(ErrorMessage = "The \"birthDate\" field is required")]
         public DateTime BirthDate { get; set; }
 
-        [MaxLength(15, ErrorMessage = "The city must have a maximum of 50 characters")]
+        [MaxLength(20, ErrorMessage = "The city must have a maximum of 50 characters")]
         public string City { get; set; }
 
-        [MaxLength(40, ErrorMessage = "The UF must have a maximum of 50 characters")]
+        [MaxLength(20, ErrorMessage = "The UF must have a maximum of 50 characters")]
         public string UF { get; set; }
 
-        [MaxLength(10, ErrorMessage = "The CEP must have a maximum of 50 characters")]
+        [MaxLength(9, ErrorMessage = "The CEP must have a maximum of 50 characters")]
         public string CEP { get; set; }
 
         public ICollection<Phone> Phones { get; set; }

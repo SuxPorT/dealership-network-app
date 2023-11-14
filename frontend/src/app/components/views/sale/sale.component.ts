@@ -26,9 +26,10 @@ export class SaleComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @Input() sale: Sale;
-  @Input() vehicle: Vehicle;
-  @Input() seller: Seller;
+  @Input() vehiclesList: Vehicle[] = [];
+  @Input() sellersList: Seller[] = [];
   @Input() isEditMode: boolean = false;
+
   @Output() editEvent = new EventEmitter<Sale>();
 
   displayedColumns = [
@@ -37,13 +38,10 @@ export class SaleComponent implements OnInit {
   ];
   dataSource!: MatTableDataSource<Sale>;
 
-  vehicleList: Vehicle[] = [];
-  sellerList: Seller[] = [];
-
   form = new FormGroup({
-    price: new FormControl(0, [Validators.required]),
+    price: new FormControl<any>(null, [Validators.required]),
     vehicleChassisNumber: new FormControl('', [Validators.required]),
-    sellerId: new FormControl(0, [Validators.required]),
+    sellerId: new FormControl<any>(null, [Validators.required]),
     isActive: new FormControl(false)
   });
 
@@ -114,13 +112,13 @@ export class SaleComponent implements OnInit {
   }
 
   filterVehicle(chassisNumber: string) {
-    const vehicle = this.vehicleList.find(x => x.chassisNumber == chassisNumber);
+    const vehicle = this.vehiclesList.find(x => x.chassisNumber == chassisNumber);
 
     return `${vehicle?.model} ${vehicle?.year} - ${vehicle?.chassisNumber}`;
   }
 
   filterSeller(id: number) {
-    const seller = this.sellerList.find(x => x.id == id);
+    const seller = this.sellersList.find(x => x.id == id);
 
     return seller?.name;
   }
@@ -128,7 +126,7 @@ export class SaleComponent implements OnInit {
   getVehicles() {
     this.vehicleService.getAll().subscribe((result) => {
       if (result) {
-        this.vehicleList = result;
+        this.vehiclesList = result;
       }
     });
   }
@@ -136,7 +134,7 @@ export class SaleComponent implements OnInit {
   getSellers() {
     this.sellerService.getAll().subscribe((result) => {
       if (result) {
-        this.sellerList = result;
+        this.sellersList = result;
       }
     });
   }
@@ -169,7 +167,12 @@ export class SaleComponent implements OnInit {
   update(sale: Sale): void {
     const dialogRef = this.dialog.open(EditDialogComponent, {
       width: '600px',
-      data: { model: sale, dialogType: DialogType.EditSale }
+      data: {
+        model: sale,
+        vehicles: this.vehiclesList,
+        sellers: this.sellersList,
+        dialogType: DialogType.EditSale
+      }
     });
 
     dialogRef.afterClosed()

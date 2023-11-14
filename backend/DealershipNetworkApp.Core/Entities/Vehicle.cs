@@ -17,13 +17,13 @@ namespace DealershipNetworkApp.Core.Entities
         public string ChassisNumber { get; set; }
 
         [Required(ErrorMessage = "The \"model\" field is required")]
-        [MaxLength(50, ErrorMessage = "The model must have a maximum of 50 characters")]
+        [MaxLength(15, ErrorMessage = "The model must have a maximum of 50 characters")]
         public string Model { get; set; }
 
         [Required(ErrorMessage = "The \"year\" field is required")]
         public int Year { get; set; }
 
-        [MaxLength(30, ErrorMessage = "The \"color\" field is required")]
+        [MaxLength(10, ErrorMessage = "The \"color\" field is required")]
         public string Color { get; set; }
 
         [Required(ErrorMessage = "The \"price\" field is required")]

@@ -24,17 +24,18 @@ export class PhoneComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
   @Input() phone: Phone;
-  @Input() owner: Owner;
   @Input() isEditMode: boolean = false;
+  @Input() ownersList: Owner[] = [];
+
   @Output() editEvent = new EventEmitter<Phone>();
 
   displayedColumns = ["id", "number", "ownerCpfCnpj", "isActive", "actions"];
   dataSource!: MatTableDataSource<Phone>;
 
-  ownersList: Owner[] = [];
-
   form = new FormGroup({
-    number: new FormControl('', [Validators.required, Validators.minLength(9)]),
+    number: new FormControl('', [
+      Validators.required, Validators.minLength(9), Validators.maxLength(20)
+    ]),
     ownerCpfCnpj: new FormControl('', [Validators.required]),
     isActive: new FormControl(false)
   });
@@ -142,6 +143,7 @@ export class PhoneComponent implements OnInit {
       width: '600px',
       data: {
         model: phone,
+        owners: this.ownersList,
         dialogType: DialogType.EditPhone
       }
     });

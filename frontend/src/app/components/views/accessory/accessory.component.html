@@ -28,8 +28,12 @@
 
           <mat-error
             *ngIf="this.form.controls['description'].hasError('required')"
-          >
-            Description is <strong>required</strong>
+            >Description is <strong>required</strong>
+          </mat-error>
+
+          <mat-error
+            *ngIf="this.form.controls['description'].hasError('maxlength')"
+            >Description must have a <strong>maximum of 50 characters</strong>
           </mat-error>
         </mat-form-field>
       </div>

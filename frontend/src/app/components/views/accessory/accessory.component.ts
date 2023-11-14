@@ -29,7 +29,9 @@ export class AccessoryComponent implements OnInit {
   dataSource!: MatTableDataSource<Accessory>;
 
   form = new FormGroup({
-    description: new FormControl('', [Validators.required]),
+    description: new FormControl('', [
+      Validators.required, Validators.maxLength(20)
+    ]),
     isActive: new FormControl(false)
   });
 

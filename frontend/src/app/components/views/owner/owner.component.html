@@ -24,8 +24,8 @@
           <mat-label>CPF/CNPJ</mat-label>
           <input matInput formControlName="cpfCnpj" required />
 
-          <mat-error *ngIf="this.form.controls['cpfCnpj'].hasError('required')">
-            CPF/CNPJ is <strong>required</strong>
+          <mat-error *ngIf="this.form.controls['cpfCnpj'].hasError('required')"
+            >CPF/CNPJ is <strong>required</strong>
           </mat-error>
         </mat-form-field>
       </div>
@@ -38,19 +38,21 @@
       >
         <mat-form-field class="field-width" appearance="fill">
           <mat-label>Hiring Type</mat-label>
-          <input matInput formControlName="hiringType" required />
+          <mat-select formControlName="hiringType" required>
+            <mat-option value="F"> Physical Person </mat-option>
+            <mat-option value="J"> Legal Person </mat-option>
+          </mat-select>
 
           <mat-error
             *ngIf="this.form.controls['hiringType'].hasError('required')"
-          >
-            Hiring Type is <strong>required</strong>
+            >Hiring Type is <strong>required</strong>
           </mat-error>
         </mat-form-field>
       </div>
 
       <div
         [ngClass]="{
-          'col-md-8': this.isEditMode,
+          'col-md-7': this.isEditMode,
           'col-lg-2': !this.isEditMode
         }"
       >
@@ -58,26 +60,59 @@
           <mat-label>Name</mat-label>
           <input matInput formControlName="name" required />
 
-          <mat-error *ngIf="this.form.controls['name'].hasError('required')">
-            Name is <strong>required</strong>
+          <mat-error *ngIf="this.form.controls['name'].hasError('required')"
+            >Name is <strong>required</strong>
+          </mat-error>
+
+          <mat-error *ngIf="this.form.controls['name'].hasError('maxlength')"
+            >Name must have a <strong>maximum of 20 characters</strong>
           </mat-error>
         </mat-form-field>
       </div>
 
       <div
         [ngClass]="{
-          'col-md-4': this.isEditMode,
+          'col-md-7': this.isEditMode,
           'col-lg-2': !this.isEditMode
         }"
       >
         <mat-form-field class="field-width" appearance="fill">
-          <mat-label>Birth Date</mat-label>
-          <input matInput formControlName="birthDate" required />
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" required />
+
+          <mat-error *ngIf="this.form.controls['email'].hasError('required')"
+            >Email is <strong>required</strong>
+          </mat-error>
+
+          <mat-error *ngIf="this.form.controls['email'].hasError('maxlength')"
+            >Email must have a <strong>maximum of 20 characters</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div
+        [ngClass]="{
+          'col-md-5': this.isEditMode,
+          'col-lg-2': !this.isEditMode
+        }"
+      >
+        <mat-form-field class="field-width" appearance="fill">
+          <mat-label>Choose a date</mat-label>
+          <input
+            matInput
+            formControlName="birthDate"
+            [matDatepicker]="picker"
+          />
+          <mat-hint>DD/MM/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
 
           <mat-error
             *ngIf="this.form.controls['birthDate'].hasError('required')"
-          >
-            Birth Date is <strong>required</strong>
+            >Birth Date is <strong>required</strong>
           </mat-error>
         </mat-form-field>
       </div>
@@ -94,8 +129,12 @@
           <mat-label>City</mat-label>
           <input matInput formControlName="city" required />
 
-          <mat-error *ngIf="this.form.controls['city'].hasError('required')">
-            City is <strong>required</strong>
+          <mat-error *ngIf="this.form.controls['city'].hasError('required')"
+            >City is <strong>required</strong>
+          </mat-error>
+
+          <mat-error *ngIf="this.form.controls['city'].hasError('maxlength')"
+            >City must have a <strong>maximum of 20 characters</strong>
           </mat-error>
         </mat-form-field>
       </div>
@@ -110,8 +149,12 @@
           <mat-label>UF</mat-label>
           <input matInput formControlName="uf" required />
 
-          <mat-error *ngIf="this.form.controls['uf'].hasError('required')">
-            UF is <strong>required</strong>
+          <mat-error *ngIf="this.form.controls['uf'].hasError('required')"
+            >UF is <strong>required</strong>
+          </mat-error>
+
+          <mat-error *ngIf="this.form.controls['uf'].hasError('maxlength')"
+            >UF must have a <strong>maximum of 20 characters</strong>
           </mat-error>
         </mat-form-field>
       </div>
@@ -126,8 +169,12 @@
           <mat-label>CEP</mat-label>
           <input matInput formControlName="cep" required />
 
-          <mat-error *ngIf="this.form.controls['cep'].hasError('required')">
-            CEP is <strong>required</strong>
+          <mat-error *ngIf="this.form.controls['cep'].hasError('required')"
+            >CEP is <strong>required</strong>
+          </mat-error>
+
+          <mat-error *ngIf="this.form.controls['cep'].hasError('maxlength')"
+            >CEP must have a <strong>maximum of 9 characters</strong>
           </mat-error>
         </mat-form-field>
       </div>
@@ -181,7 +228,7 @@
     >
       <ng-container matColumnDef="cpfCnpj">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>CPF/CNPJ</th>
-        <td class="col-2" mat-cell *matCellDef="let item">
+        <td class="col-1" mat-cell *matCellDef="let item">
           {{ item.cpfCnpj }}
         </td>
       </ng-container>
@@ -189,7 +236,7 @@
       <ng-container matColumnDef="hiringType">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Hiring Type</th>
         <td class="col-1" mat-cell *matCellDef="let item">
-          {{ item.hiringType }}
+          {{ filterHiringType(item.hiringType) }}
         </td>
       </ng-container>
 
@@ -197,6 +244,13 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
         <td class="col-2" mat-cell *matCellDef="let item">
           {{ item.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+        <td class="col-1" mat-cell *matCellDef="let item">
+          {{ item.email }}
         </td>
       </ng-container>
 

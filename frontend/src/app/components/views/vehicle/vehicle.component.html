@@ -28,8 +28,13 @@
 
           <mat-error
             *ngIf="this.form.controls['chassisNumber'].hasError('required')"
-          >
-            Chassis Number is <strong>required</strong>
+            >Chassis Number is <strong>required</strong>
+          </mat-error>
+
+          <mat-error
+            *ngIf="this.form.controls['chassisNumber'].hasError('maxlength')"
+            >Chassis Number must have a
+            <strong>maximum of 17 characters</strong>
           </mat-error>
         </mat-form-field>
       </div>
@@ -44,8 +49,12 @@
           <mat-label>Model</mat-label>
           <input matInput formControlName="model" required />
 
-          <mat-error *ngIf="this.form.controls['model'].hasError('required')">
-            Model is <strong>required</strong>
+          <mat-error *ngIf="this.form.controls['model'].hasError('required')"
+            >Model is <strong>required</strong>
+          </mat-error>
+
+          <mat-error *ngIf="this.form.controls['model'].hasError('maxlength')"
+            >Model must have a <strong>maximum of 15 characters</strong>
           </mat-error>
         </mat-form-field>
       </div>
@@ -60,8 +69,8 @@
           <mat-label>Year</mat-label>
           <input matInput formControlName="year" required />
 
-          <mat-error *ngIf="this.form.controls['year'].hasError('required')">
-            Year is <strong>required</strong>
+          <mat-error *ngIf="this.form.controls['year'].hasError('required')"
+            >Year is <strong>required</strong>
           </mat-error>
         </mat-form-field>
       </div>
@@ -76,8 +85,12 @@
           <mat-label>Color</mat-label>
           <input matInput formControlName="color" required />
 
-          <mat-error *ngIf="this.form.controls['color'].hasError('required')">
-            Color is <strong>required</strong>
+          <mat-error *ngIf="this.form.controls['color'].hasError('required')"
+            >Color is <strong>required</strong>
+          </mat-error>
+
+          <mat-error *ngIf="this.form.controls['color'].hasError('maxlength')"
+            >Color must have a <strong>maximum of 10 characters</strong>
           </mat-error>
         </mat-form-field>
       </div>
@@ -92,8 +105,8 @@
           <mat-label>Price</mat-label>
           <input matInput formControlName="price" required />
 
-          <mat-error *ngIf="this.form.controls['price'].hasError('required')">
-            Price is <strong>required</strong>
+          <mat-error *ngIf="this.form.controls['price'].hasError('required')"
+            >Price is <strong>required</strong>
           </mat-error>
         </mat-form-field>
       </div>
@@ -110,8 +123,8 @@
           <mat-label>Mileage</mat-label>
           <input matInput formControlName="mileage" required />
 
-          <mat-error *ngIf="this.form.controls['mileage'].hasError('required')">
-            Mileage is <strong>required</strong>
+          <mat-error *ngIf="this.form.controls['mileage'].hasError('required')"
+            >Mileage is <strong>required</strong>
           </mat-error>
         </mat-form-field>
       </div>
@@ -128,8 +141,13 @@
 
           <mat-error
             *ngIf="this.form.controls['systemVersion'].hasError('required')"
-          >
-            System Version is <strong>required</strong>
+            >System Version is <strong>required</strong>
+          </mat-error>
+
+          <mat-error
+            *ngIf="this.form.controls['systemVersion'].hasError('maxlength')"
+            >System Version must have a
+            <strong>maximum of 10 characters</strong>
           </mat-error>
         </mat-form-field>
       </div>
@@ -144,7 +162,7 @@
           <mat-label>Owner</mat-label>
           <mat-select formControlName="ownerCpfCnpj" required>
             <mat-option
-              *ngFor="let owner of this.ownerList"
+              *ngFor="let owner of this.ownersList"
               [value]="owner.cpfCnpj"
             >
               {{ owner.name }} - {{ owner.cpfCnpj }}
@@ -153,8 +171,7 @@
 
           <mat-error
             *ngIf="this.form.controls['ownerCpfCnpj'].hasError('required')"
-          >
-            Owner is <strong>required</strong>
+            >Owner is <strong>required</strong>
           </mat-error>
         </mat-form-field>
       </div>

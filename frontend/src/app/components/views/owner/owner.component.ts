@@ -26,7 +26,7 @@ export class OwnerComponent implements OnInit {
   @Output() editEvent = new EventEmitter<Owner>();
 
   displayedColumns = [
-    "cpfCnpj", "hiringType", "name", "birthDate",
+    "cpfCnpj", "hiringType", "name", "email", "birthDate",
     "city", "UF", "CEP", "isActive", "actions"
   ];
   dataSource!: MatTableDataSource<Owner>;
@@ -34,11 +34,22 @@ export class OwnerComponent implements OnInit {
   form = new FormGroup({
     cpfCnpj: new FormControl('', [Validators.required]),
     hiringType: new FormControl('', [Validators.required]),
-    name: new FormControl('', [Validators.required]),
-    birthDate: new FormControl(new Date(), [Validators.required]),
-    city: new FormControl('', [Validators.required]),
-    uf: new FormControl('', [Validators.required]),
-    cep: new FormControl('', [Validators.required]),
+    name: new FormControl('', [
+      Validators.required, Validators.maxLength(20)
+    ]),
+    email: new FormControl('', [
+      Validators.required, Validators.maxLength(20)
+    ]),
+    birthDate: new FormControl<any>('', [Validators.required]),
+    city: new FormControl('', [
+      Validators.required, Validators.maxLength(20)
+    ]),
+    uf: new FormControl('', [
+      Validators.required, Validators.maxLength(20)
+    ]),
+    cep: new FormControl('', [
+      Validators.required, Validators.maxLength(9)
+    ]),
     isActive: new FormControl(false)
   });
 
@@ -80,17 +91,21 @@ export class OwnerComponent implements OnInit {
     this.form.controls['cpfCnpj'].setValue(this.owner.cpfCnpj);
     this.form.controls['hiringType'].setValue(this.owner.hiringType);
     this.form.controls['name'].setValue(this.owner.name);
+    this.form.controls['email'].setValue(this.owner.email);
     this.form.controls['birthDate'].setValue(this.owner.birthDate);
     this.form.controls['city'].setValue(this.owner.city);
     this.form.controls['uf'].setValue(this.owner.uf);
     this.form.controls['cep'].setValue(this.owner.cep);
     this.form.controls['isActive'].setValue(this.owner.isActive);
+
+    this.form.controls['cpfCnpj'].disable();
   }
 
   clearForm(): void {
     this.form.controls['cpfCnpj'].setValue('');
     this.form.controls['hiringType'].setValue('');
     this.form.controls['name'].setValue('');
+    this.form.controls['email'].setValue('');
     this.form.controls['birthDate'].setValue(null);
     this.form.controls['city'].setValue('');
     this.form.controls['uf'].setValue('');
@@ -100,6 +115,7 @@ export class OwnerComponent implements OnInit {
     this.form.controls['cpfCnpj'].setErrors(null);
     this.form.controls['hiringType'].setErrors(null);
     this.form.controls['name'].setErrors(null);
+    this.form.controls['email'].setErrors(null);
     this.form.controls['birthDate'].setErrors(null);
     this.form.controls['city'].setErrors(null);
     this.form.controls['uf'].setErrors(null);
@@ -111,6 +127,7 @@ export class OwnerComponent implements OnInit {
     this.owner.cpfCnpj = this.form.controls['cpfCnpj'].value!;
     this.owner.hiringType = this.form.controls['hiringType'].value!;
     this.owner.name = this.form.controls['name'].value!;
+    this.owner.email = this.form.controls['email'].value!;
     this.owner.birthDate = this.form.controls['birthDate'].value!;
     this.owner.city = this.form.controls['city'].value!;
     this.owner.uf = this.form.controls['uf'].value!;
@@ -118,6 +135,17 @@ export class OwnerComponent implements OnInit {
     this.owner.isActive = this.form.controls['isActive'].value!;
 
     this.editEvent.emit(this.owner);
+  }
+
+  filterHiringType(hiringType: string) {
+    const hiringTypeMap: { [key: string]: string; } = {
+      "F": "Physical Person",
+      "J": "Legal Person",
+    };
+
+    const charType = hiringType.toUpperCase().charAt(0);
+
+    return hiringTypeMap[charType] || "-";
   }
 
   getOwners(): void {
@@ -135,6 +163,7 @@ export class OwnerComponent implements OnInit {
     owner.cpfCnpj = this.form.controls['cpfCnpj'].value!;
     owner.hiringType = this.form.controls['hiringType'].value!;
     owner.name = this.form.controls['name'].value!;
+    owner.email = this.form.controls['email'].value!;
     owner.birthDate = this.form.controls['birthDate'].value!;
     owner.city = this.form.controls['city'].value!;
     owner.uf = this.form.controls['uf'].value!;

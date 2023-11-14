@@ -24,12 +24,16 @@
           <mat-label>Number</mat-label>
           <input matInput formControlName="number" required />
 
-          <mat-error *ngIf="this.form.controls['number'].hasError('required')">
-            Number is <strong>required</strong>
+          <mat-error *ngIf="this.form.controls['number'].hasError('required')"
+            >Number is <strong>required</strong>
           </mat-error>
 
-          <mat-error *ngIf="this.form.controls['number'].hasError('minlength')">
-            Number <strong>must have at least 9 characters</strong>
+          <mat-error
+            *ngIf="
+              this.form.controls['number'].hasError('minlength') ||
+              this.form.controls['number'].hasError('maxlength')
+            "
+            >Number must have <strong>9 to 20 characters</strong>
           </mat-error>
         </mat-form-field>
       </div>
@@ -42,11 +46,7 @@
       >
         <mat-form-field class="field-width" appearance="fill">
           <mat-label>Owner</mat-label>
-          <mat-select
-            [(value)]="this.owner"
-            formControlName="ownerCpfCnpj"
-            required
-          >
+          <mat-select formControlName="ownerCpfCnpj" required>
             <mat-option
               *ngFor="let owner of this.ownersList"
               [value]="owner.cpfCnpj"
@@ -62,7 +62,7 @@
           </mat-error>
         </mat-form-field>
       </div>
-      
+
       <div
         [ngClass]="{
           'col-md-12 mb-4': this.isEditMode,

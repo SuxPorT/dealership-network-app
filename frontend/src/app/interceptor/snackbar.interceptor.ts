@@ -6,13 +6,13 @@ import {
   HttpInterceptor,
   HttpResponse,
 } from '@angular/common/http';
-import { Observable, catchError, tap, throwError } from 'rxjs';
+import { Observable, catchError, tap } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class SnackbarInterceptor implements HttpInterceptor {
 
-  private duration = 500000;
+  private duration = 3000;
 
   constructor(private snackBar: MatSnackBar) { }
 
@@ -39,25 +39,29 @@ export class SnackbarInterceptor implements HttpInterceptor {
         }
       }),
       catchError((errorResponse) => {
-        const errorList = errorResponse.error;
+        const error = errorResponse.error;
         let errorSnackbarMessage = 'An error occurred while saving.';
 
-        if (errorList?.errors) {
-          for (const key in errorList.errors) {
-            if (errorList.errors.hasOwnProperty(key)) {
-              errorSnackbarMessage += `\n${key}: ${errorList.errors[key][0]}`;
+        if (error?.errors) {
+          for (const key in error.errors) {
+            if (error.errors.hasOwnProperty(key)) {
+              errorSnackbarMessage += `\n${key}: ${error.errors[key][0]}`;
             }
           }
         } else {
-          errorSnackbarMessage += `\n${errorResponse.error}`;
+          if (error instanceof ProgressEvent) {
+            errorSnackbarMessage += "\nBackend is currently unavailable.";
+          } else {
+            errorSnackbarMessage += `\n${error}`;
+          }
         }
 
         this.snackBar.open(errorSnackbarMessage, 'Close',
           { duration: this.duration, panelClass: 'error-snackbar' });
 
-        const statusCode = errorList?.status || errorResponse.status;
-        const errorMessage = errorList?.title || errorResponse.error;
-        const traceId = ` (Trace ID: ${errorList?.traceId}`;
+        const statusCode = error?.status || errorResponse.status;
+        const errorMessage = error?.title || error.type || error;
+        const traceId = ` (Trace ID: ${error?.traceId}`;
         const formattedError = `HTTP Error ${statusCode}: ${errorMessage}${traceId}`;
 
         throw new Error(formattedError);

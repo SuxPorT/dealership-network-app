@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import ptBr from '@angular/common/locales/pt';
 
 import { AppRoutingModule } from './app-routing.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -22,6 +23,10 @@ import { EditDialogComponent } from './components/shared/edit-dialog/edit-dialog
 import { DeleteDialogComponent } from './components/shared/delete-dialog/delete-dialog.component';
 import { SnackbarInterceptor } from './interceptor/snackbar.interceptor';
 import { DEFAULT_TIMEOUT, SpinnerInterceptor } from './interceptor/spinner.interceptor';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(ptBr);
 
 @NgModule({
   declarations: [
@@ -61,6 +66,14 @@ import { DEFAULT_TIMEOUT, SpinnerInterceptor } from './interceptor/spinner.inter
     }, {
       provide: DEFAULT_TIMEOUT,
       useValue: 30000
+    },
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'en-GB'
+    },
+    {
+      provide: LOCALE_ID,
+      useValue: 'pt-BR',
     }
   ],
   bootstrap: [AppComponent]

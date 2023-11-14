@@ -20,6 +20,7 @@
     (closeDialogEvent)="this.onNoClick()"
     (editEvent)="this.onSubmit($event)"
     [phone]="this.data.model"
+    [ownersList]="this.data.owners"
     [isEditMode]="true"
   ></app-phone>
 
@@ -28,6 +29,8 @@
     (closeDialogEvent)="this.onNoClick()"
     (editEvent)="this.onSubmit($event)"
     [sale]="this.data.model"
+    [vehiclesList]="this.data.vehicles"
+    [sellersList]="this.data.sellers"
     [isEditMode]="true"
   ></app-sale>
 
@@ -44,6 +47,7 @@
     (closeDialogEvent)="this.onNoClick()"
     (editEvent)="this.onSubmit($event)"
     [vehicle]="this.data.model"
+    [ownersList]="this.data.owners"
     [isEditMode]="true"
   ></app-vehicle>
 </div>

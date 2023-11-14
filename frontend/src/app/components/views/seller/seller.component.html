@@ -16,7 +16,7 @@
     <div class="row align-items-center">
       <div
         [ngClass]="{
-          'col-md-12': this.isEditMode,
+          'col-md-8': this.isEditMode,
           'col-lg-2': !this.isEditMode
         }"
       >
@@ -24,15 +24,19 @@
           <mat-label>Name</mat-label>
           <input matInput formControlName="name" required />
 
-          <mat-error *ngIf="this.form.controls['name'].hasError('required')">
-            Name is <strong>required</strong>
+          <mat-error *ngIf="this.form.controls['name'].hasError('required')"
+            >Name is <strong>required</strong>
+          </mat-error>
+
+          <mat-error *ngIf="this.form.controls['name'].hasError('maxlength')"
+            >Name must have a <strong>maximum of 50 characters</strong>
           </mat-error>
         </mat-form-field>
       </div>
 
       <div
         [ngClass]="{
-          'col-md-12': this.isEditMode,
+          'col-md-4': this.isEditMode,
           'col-lg-2': !this.isEditMode
         }"
       >
@@ -42,8 +46,16 @@
 
           <mat-error
             *ngIf="this.form.controls['baseSalary'].hasError('required')"
-          >
-            Base salary is <strong>required</strong>
+            >Base salary is <strong>required</strong>
+          </mat-error>
+
+          <mat-error
+            *ngIf="
+              this.form.controls['baseSalary'].hasError('min') ||
+              this.form.controls['baseSalary'].hasError('min')
+            "
+            >Base salary must be
+            <strong>between R$1200.00 and R$6000.00</strong>
           </mat-error>
         </mat-form-field>
       </div>

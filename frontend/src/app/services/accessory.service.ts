@@ -7,7 +7,6 @@ import { BaseService } from './base.service';
   providedIn: 'root'
 })
 export class AccessoryService extends BaseService<Accessory> {
-
   protected override endpoint: string = "Accessories";
 
   constructor(protected override http: HttpClient) {

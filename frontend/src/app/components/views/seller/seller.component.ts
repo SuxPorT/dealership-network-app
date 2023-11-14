@@ -10,6 +10,7 @@ import { Seller } from 'src/app/models/seller.model';
 import { SellerService } from 'src/app/services/seller.service';
 import { DeleteDialogComponent } from '../../shared/delete-dialog/delete-dialog.component';
 import { EditDialogComponent } from '../../shared/edit-dialog/edit-dialog.component';
+import { formatNumber } from '@angular/common';
 
 @Component({
   selector: 'app-seller',
@@ -29,8 +30,11 @@ export class SellerComponent implements OnInit {
   dataSource!: MatTableDataSource<Seller>;
 
   form = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    baseSalary: new FormControl(0, [Validators.required]),
+    name: new FormControl('', [
+      Validators.required, Validators.maxLength(50)]),
+    baseSalary: new FormControl<any>('', [
+      Validators.required, Validators.min(1200), Validators.max(6000)
+    ]),
     isActive: new FormControl(false)
   });
 
